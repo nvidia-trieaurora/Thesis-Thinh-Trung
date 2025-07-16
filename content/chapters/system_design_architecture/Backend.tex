@@ -1,0 +1,112 @@
+\section{Backend Design (Supabase \& PostgreSQL)}
+
+This section details the backend architecture of the data annotation platform, which is built entirely on the Supabase platform, leveraging its integrated services to create a robust, scalable, and secure system.
+
+\subsection{Supabase as the Backend Foundation}
+
+The backend is architected around Supabase, an open-source Backend-as-a-Service (BaaS) platform that provides a managed PostgreSQL database, authentication, real-time capabilities, and serverless functions. Supabase was chosen as a robust alternative to traditional backend development, simplifying much of the heavy lifting while offering the flexibility and transparency of open-source tools.
+
+Unlike proprietary BaaS solutions, Supabase is built with open-source tools, primarily PostgreSQL, providing developers with the full power of SQL while benefiting from a stable and scalable managed infrastructure.
+
+\textbf{Core Components Utilized:}
+\begin{itemize}
+    \item \textbf{PostgreSQL Database:} At the heart of Supabase is PostgreSQL, a highly reliable, extensible, and performant relational database system. PostgreSQL is a dominant force in the relational database market, holding a 16.85\% share as of 2025, making it the second most used open-source database after MySQL. It is also recognized as the most admired and desired database in recent surveys. This choice allows the platform to leverage the full power of SQL, including advanced queries, JSON support, and ACID compliance, ensuring strong data integrity and transactional consistency. In performance comparisons, PostgreSQL within Supabase demonstrates significant advantages for complex queries, with complex joins completing in 89ms compared to Firebase's 251ms, and aggregations in 103ms versus Firebase's 327ms.
+    \item \textbf{Supabase Auth:} This component provides secure user authentication and management, enabling features like user registration, login, session management, password resets, and email verification with minimal code. It supports various authentication methods, including email/password and social logins.
+    \item \textbf{Supabase Realtime:} Leveraging PostgreSQL replication, Supabase's Realtime engine provides live data synchronization, allowing the frontend to react instantly to database changes. This is crucial for collaborative environments and real-time notifications.
+\end{itemize}
+
+\subsection{Database Schema and Data Model}
+
+The database schema is meticulously designed to store platform-specific entities and efficiently manage DICOM metadata, adhering to principles of logical data separation and robust security.
+
+\subsubsection*{Logical Data Separation:}
+\begin{itemize}
+    \item \textbf{Core Tables (\_ prefix):} Raw, normalized data tables (e.g., \_projects, \_tasks, \_users, \_annotations, \_workflows, \_studies, \_series, \_instances) are prefixed with an underscore. These tables are considered internal and are not directly exposed to the frontend. This convention protects data integrity by ensuring that direct modifications bypass the defined business logic and security policies.
+    \item \textbf{Data Views:} The primary interface for the application is provided through secure views (e.g., \texttt{projects}, \texttt{tasks}). These views join and expose data from the core tables, acting as a secure and flexible API layer. This abstraction allows fine-grained control over what data is visible and how it can be accessed by different user roles, thereby enforcing the Attribute-Based Access Control (ABAC) model at the database level. This design ensures the platform can efficiently handle the unique characteristics of medical imaging data and its associated metadata, such as indexing standard patient and study information and modality-specific tags.
+\end{itemize}
+
+\subsubsection*{Security and Access Control:}
+\begin{itemize}
+    \item \textbf{Row-Level Security (RLS):} All views are defined with \texttt{WITH (security\_invoker = true)}. This critical PostgreSQL feature ensures that access to data through these views is evaluated based on the permissions of the invoking user, not the view owner. This mechanism, combined with Supabase's robust RLS capabilities, enforces user-specific data access policies.
+    \item \textbf{Policies:} RLS policies, defined in files such as \texttt{supabase/policies.sql}, implement the platform's Attribute-Based Access Control (ABAC) model. These policies dynamically grant or deny access based on a combination of user attributes (e.g., role, project membership), resource attributes (e.g., data sensitivity, study type), and environmental attributes (e.g., time of access, device type). This fine-grained control is paramount for HIPAA compliance and patient data privacy in medical imaging contexts.
+\end{itemize}
+
+\subsection{Business Logic: The SQL-Centric Approach}
+
+The platform adopts a unique SQL-centric approach where core business logic is deeply embedded within the PostgreSQL database, leveraging its capabilities for transactional integrity and secure execution.
+
+\subsubsection*{Atomic and Idempotent Functions:} 
+All critical business logic, particularly for complex operations and workflow state transitions, is encapsulated within PostgreSQL functions. These functions are designed to be atomic (all changes are committed or none are) and idempotent (executing them multiple times produces the same result as executing them once). PostgreSQL triggers are used to automatically execute these SQL functions on specific table events (e.g., \texttt{AFTER INSERT ON \_tasks}).
+
+\subsubsection*{The Workflow Engine:}
+\begin{itemize}
+    \item \textbf{State Transitions:} We designed some utils functions to manage the lifecycle of a task as it moves through different stages (e.g., ``Pending AI Inference,'' ``Awaiting Human Review,'' ``Quality Assured''). These functions encapsulate the logic for validating transitions, updating task statuses, and assigning the next steps.
+    \item \textbf{Action Handlers:} Specific user actions trigger corresponding SQL functions. These functions process the action, update relevant data, and potentially initiate subsequent workflow steps.
+\end{itemize}
+
+\subsubsection*{Remote Procedure Calls (RPC):} 
+The frontend invokes these SQL functions via Supabase's RPC mechanism. This effectively creates a secure and efficient API without the need for a traditional, separate server-side application layer.
+
+\subsection{Authentication and Authorization}
+
+\subsubsection*{User Authentication:} 
+Supabase Auth is utilized to manage user identity, including sign-up, login, and session management. It supports various methods like email/password and social logins. User sessions are managed using JWTs (JSON Web Tokens).
+
+\subsubsection*{Attribute-Based Access Control (ABAC):}
+\begin{itemize}
+    \item \textbf{Attributes:} Permissions are determined by evaluating user attributes (e.g., \texttt{user\_id}, role, department), resource attributes (e.g., \texttt{study\_instance\_uid}, \texttt{data\_sensitivity}), and environmental attributes (e.g., time of day, device type).
+    \item \textbf{Policies:} Access decisions are made in real-time by evaluating these attributes against predefined policies, expressed using Boolean logic (AND, OR, NOT, IF/THEN). Example: ``A user has a role with access to resource:workflow and action:annotate can be assigned task to annotate a dicom image''
+\end{itemize}
+
+\subsection{Real-Time Capabilities and Notifications}
+
+\textbf{Live Updates:} 
+Supabase's Realtime engine broadcasts database changes to connected clients in real-time using PostgreSQL's logical replication.
+
+\textbf{Use Cases:}
+\begin{itemize}
+    \item \textbf{Notifications:} Users are alerted about new task assignments, status changes, or critical project updates.
+    \item \textbf{Collaborative UI:} Changes made by one annotator (e.g., adding annotations, updating task statuses) are immediately reflected in the interfaces of other users.
+\end{itemize}
+
+\subsection{Backend Testing Strategy}
+
+Ensuring the reliability and correctness of the backend logic is paramount for a platform handling sensitive medical data.
+
+\subsubsection*{Ensuring Reliability:} 
+The testing methodology focuses on comprehensive validation of business logic, data integrity, and security policies. This includes unit tests and end-to-end simulations of workflows.
+
+\subsubsection*{SQL-Based Testing:} 
+A key strategy is the use of \texttt{pg\_prove}, allowing test cases to be written directly in SQL to validate the behavior of views and functions.
+
+\subsubsection*{Direct Database Validation:} 
+Tests simulate user roles, data states, and workflows to verify correct behavior and access control enforcement. The following snippet demonstrates a test case that covers project creation, task assignment, annotation submission.
+\begin{lstlisting}[language=SQL]
+begin;
+
+select plan (19);
+
+select tests.create_supabase_user ('admin@test.com');
+select tests.authenticate_as ('admin@test.com');
+
+create temp table test_project as
+select public_v2.projects_create ('New Project', 'A description') as id;
+
+select public_v2.project_members_update (
+    (select id from test_project),
+    JSONB_BUILD_ARRAY(JSONB_BUILD_OBJECT('id', tests.get_supabase_uid ('annotator@test.com'), 'role_id', '2d0ac3ac-abd8-4611-bd86-c90ec4d7271c'))
+);
+
+select public_v2.workflow_start ();
+
+create temp table test_assignment as
+select id from public_v2.tasks where project_id = (select id from test_project) and status = 'PENDING' limit 1;
+
+select tests.authenticate_as ('annotator@test.com');
+select public_v2.tasks_start ((select id from test_assignment));
+select public_v2.workflow_annotate_submit ((select id from test_assignment), 'segmentationid');
+
+select * from finish ();
+rollback;
+
+\end{lstlisting}

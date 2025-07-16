@@ -1,0 +1,69 @@
+\chapter{Conclusion and Future Work}
+\label{sec:Conclusion and Future Work}
+\begin{ChapAbstract}
+
+Chapter 5 concludes by synthesizing the thesis's contributions. The thesis introduced an AI-assisted smart navigation system combining augmented reality with advanced indoor modeling and natural language processing. The work demonstrated how integrating refined path computation with LLM-powered query interpretation enhances user navigation experiences. Future directions include automating the 3D scanning process, incorporating BLE beacons for improved tracking accuracy, and optimizing LLM query efficiency to refine further and scale the system.
+
+\end{ChapAbstract}
+
+\section{Summary}
+This thesis presented an innovative AI-assisted intelligent navigation system that integrates augmented reality (AR) with advanced indoor environment modeling and large language models (LLMs) to overcome the limitations of traditional navigation methods. By employing mobile scanning via the Vuforia Creator application, accurate 3D models were generated and imported as Area Targets, thereby establishing a robust foundation for real-time environment tracking and localization.
+
+A key contribution of this work is the integration of multiple components into a cohesive system that enhances the overall user experience. This includes the seamless combination of a refined NavMesh for precise path computation with an AI assistant powered by a large language model. This integration enables the system to interpret natural language queries and efficiently map them to a structured hierarchical destination database, thereby streamlining destination identification and delivering context-aware, personalized navigation support.
+
+Overall, the thesis demonstrates the technical feasibility and practical benefits of merging AR with AI-driven natural language processing for indoor navigation. The proposed system lays the groundwork for scalable, intuitive navigation solutions that can be further refined and extended in future research.
+
+\section{Future Work}
+\label{sec:future_work}
+
+This section outlines potential avenues for future development and research to further enhance the capabilities and robustness of the data annotation platform. These directions aim to expand functionality, improve user experience, optimize performance, and integrate advanced technologies.
+
+\subsection{Advanced Workflow Capabilities}
+The existing workflow engine provides a flexible foundation, but several enhancements can extend its power and adaptability:
+\begin{itemize}
+    \item \textbf{Support for More Stage Nodes}: Introducing a wider array of predefined and customizable stage types beyond current annotations, reviews, and consensus. This could include specialized nodes for data preprocessing, automated quality checks, model inference triggers, or complex data transformations, enabling even more diverse and automated pipelines.
+    \item \textbf{Workflow Versioning and Rollback}: Implementing a system to version workflows would allow users to track changes, revert to previous configurations, and ensure reproducibility of annotation processes.
+    \item \textbf{Complex Stage Types}: Developing more sophisticated custom stage types that incorporate complex conditional logic or external API calls.
+    \item \textbf{Workflow Templates and Sharing}: Allowing users to create, save, and share workflow templates would accelerate project setup and promote best practices across different teams or organizations.
+\end{itemize}
+
+\subsection{Enhanced Annotation Tools and AI Integration}
+Building upon the current annotation capabilities, future work can focus on more intelligent and efficient labeling, particularly for complex medical data:
+\begin{itemize}
+    \item \textbf{Customizable Annotation Interfaces}: Creating an abstraction layer or framework that allows for seamless integration with external web-based UI tools or even desktop applications like 3D Slicer. This would enable users to utilize specialized, domain-specific annotation environments while keeping project and task management centralized on the platform.
+    \item \textbf{Active Learning Integration}: Implementing active learning loops where the platform identifies ambiguous data points and prioritizes them for human annotation, thereby optimizing the labeling effort and improving model performance with fewer annotations.
+    \item \textbf{More AI-Assisted Labeling Tools}: Expanding the suite of AI-assisted tools to include functionalities like object tracking across frames in video annotation, semi-supervised segmentation, or generative AI-based suggestion tools.
+\end{itemize}
+
+\subsection{Improved Data Management and Caching}
+Further development in data management and caching can provide deeper insights, better control, and significant performance gains:
+\begin{itemize}
+    \item \textbf{Advanced Reporting and Analytics}: Developing more comprehensive dashboards and reporting tools to visualize annotation progress, inter-annotator agreement (IAA), annotator performance metrics, and bottlenecks within workflows.
+    \item \textbf{Caching DICOM Files (with Electron Migration Consideration)}: Implementing a robust caching mechanism for large DICOM files to significantly improve loading times for annotators. Given the substantial storage requirements for medical imaging data and the desire for improved local file access performance, exploring a migration to an Electron-based desktop application could be considered. This would enable direct access to more disk space and potentially local processing capabilities, overcoming browser storage limitations.
+\end{itemize}
+
+\subsection{Refined Security, Access Control, and Administration}
+While robust, the authorization system can be further refined for broader enterprise use and to address specific security concerns:
+\begin{itemize}
+    \item \textbf{Enhanced Role-Based Access Control and Existing Issues}: While ABAC is foundational, a complementary enhancement to Role-Based Access Control (RBAC) could simplify common permission assignments. This involves refining predefined roles and ensuring that the interaction between ABAC policies and these roles is seamless and secure, addressing any edge cases or existing permission discrepancies identified during testing or deployment.
+    \item \textbf{Auditing and Compliance Features}: Enhancing logging and auditing capabilities to track all user actions and system events. This is crucial for maintaining accountability and achieving compliance in regulated industries such as healthcare.
+    \item \textbf{Organization-Level Management}: Introducing hierarchical organizational structures to manage multiple teams, projects, and users at an enterprise level, facilitating easier scaling and administrative oversight.
+\end{itemize}
+
+\subsection{Performance and Scalability Optimizations}
+As the platform scales to handle larger datasets and more concurrent users, continuous performance optimization will be crucial:
+\begin{itemize}
+    \item \textbf{Optimized Database Queries}: Continuously optimizing database queries and indexing strategies to ensure efficient data retrieval and manipulation, especially for large-scale data and complex workflow operations.
+    \item \textbf{Caching Mechanisms}: Implementing advanced caching strategies at various layers (database query results, application data, and client-side UI data) to reduce latency and improve overall responsiveness.
+\end{itemize}
+
+\subsection{User Experience and Testing}
+Continuous refinement of the user interface and platform robustness based on user feedback and best practices in UI/UX design and software quality assurance:
+\begin{itemize}
+    \item \textbf{Intuitive Onboarding Flows (using Tour/Guides)}: Developing guided onboarding experiences, possibly incorporating interactive tours or step-by-step guides, to quickly familiarize new users with the platform's core functionalities and accelerate their productivity.
+    \item \textbf{Improved Testing Application}: Expanding the test suite to include a broader range of end-to-end scenarios, stress testing, and performance benchmarks. This would involve investing in more sophisticated testing frameworks and potentially automated UI testing tools to ensure the application's stability and reliability under various conditions.
+    \item \textbf{Customizable Dashboards}: Allowing users to personalize their dashboards to prioritize relevant tasks, projects, and notifications.
+    \item \textbf{Mobile and Tablet Optimization}: Ensuring the platform offers a seamless and responsive experience across various devices.
+\end{itemize}
+
+By pursuing these areas, the data annotation platform can evolve into an even more comprehensive, efficient, and intelligent solution for diverse annotation needs, particularly in complex domains like medical imaging.

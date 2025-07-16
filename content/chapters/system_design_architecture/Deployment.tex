@@ -1,0 +1,37 @@
+\section{ Deployment Architecture and Infrastructure}
+
+The deployment architecture is designed for high availability, performance, and efficient management of both static and dynamic services.
+
+\subsection{Service Hosting Strategy}
+\subsubsection*{Frontend (Cloudflare Pages)}
+The main React application, including the embedded OHIF Viewer, is deployed on Cloudflare Pages. This choice provides several benefits:
+
+\begin{itemize}
+    \item \textbf{Global CDN}: Static assets are automatically deployed to Cloudflare's global Content Delivery Network, ensuring low-latency responses for users worldwide.
+    \item \textbf{Built-in CI/CD}: Cloudflare Pages integrates seamlessly with Git repositories (e.g., GitHub), automating the build and deployment process upon code pushes.
+    \item \textbf{Free SSL}: Automatic SSL certificate provisioning secures the frontend without additional configuration.
+\end{itemize}
+
+\subsubsection*{Backend Services (Azure VM)}
+Stateful services, including Orthanc, MONAI, and Nginx, are hosted on a dedicated Azure Virtual Machine. This provides a controlled environment for services that require persistent storage, specific hardware configurations (e.g., GPUs for MONAI), and direct network access to each other. Hosting these services within a private cloud environment like Azure VM ensures data residency and compliance with medical data regulations, preventing sensitive information from leaving the organization's controlled infrastructure.
+
+\subsection{Centralized Access with Nginx Reverse Proxy}
+Nginx plays a crucial role as a centralized reverse proxy for all backend services hosted on the Azure VM. All incoming traffic from the frontend (Cloudflare Pages) and other external clients is routed through Nginx. Its responsibilities include:
+
+\begin{itemize}
+    \item \textbf{Traffic Routing}: Directing requests to the appropriate backend service (e.g., to Orthanc for DICOM data, to MONAI for AI inference, or to the core API for database operations).
+    \item \textbf{Load Balancing}: Distributing requests across multiple instances of backend services (if scaled) to maximize speed and capacity utilization.
+    \item \textbf{Security}: Acting as a protective layer, masking the identities of backend servers, and enforcing security policies like SSL/TLS encryption.
+\end{itemize}
+
+Simplifying Network Configuration: Presenting a single public endpoint for multiple internal services, simplifying firewall rules and domain management.
+
+\subsection{Continuous Integration/Continuous Deployment (CI/CD)}
+The platform leverages an automated CI/CD pipeline via Cloudflare Pages for the frontend. This pipeline is configured to:
+
+\begin{itemize}
+    \item \textbf{Automatically Build}: Trigger a build process whenever code is pushed to the designated Git repository (e.g., main branch).
+    \item \textbf{Deploy}: Automatically deploy the newly built frontend application to Cloudflare's global CDN.
+\end{itemize}
+This automation ensures rapid iteration, consistent deployments, and minimizes manual intervention, allowing developers to focus on feature development rather than deployment logistics. For backend services, a separate CI/CD process (e.g., using Azure DevOps or GitHub Actions) would manage builds and deployments to the Azure VM, ensuring that all components of the system are updated efficiently and reliably.
+

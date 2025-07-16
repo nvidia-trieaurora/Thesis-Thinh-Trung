@@ -1,0 +1,46 @@
+Generated latex
+\section{System Requirements}
+
+This section outlines the hardware and software prerequisites for deploying and utilizing the data annotation platform. The system is designed as a web-based application, with a distinct client-side interface and a cloud-hosted backend.
+
+\subsection{Client-Side Requirements}
+This section details the prerequisites for end-users interacting with the platform's web-based frontend.
+
+\subsubsection{Software Requirements}
+\begin{itemize}
+    \item \textbf{Web Browser:} A modern web browser (e.g., Google Chrome, Mozilla Firefox, Microsoft Edge, Apple Safari) is required. The browser must support contemporary web standards, including JavaScript and CSS, for proper rendering and interactive functionality of the React-based frontend developed with Refine.dev and Ant Design.
+    \item \textbf{Internet Connectivity:} A stable and reliable internet connection is essential for users to access the platform's cloud-hosted backend, retrieve project data, submit annotations, and receive real-time updates through Supabase's real-time capabilities.
+\end{itemize}
+
+\subsubsection{Hardware Recommendations}
+\begin{itemize}
+    \item \textbf{Device Type:} A desktop or laptop computer is recommended for optimal user experience. This allows for a larger screen area and precise input methods, which are beneficial for detailed annotation tasks and complex workflow graph design.
+    \item \textbf{Processing Power \& Memory:} Devices should possess sufficient computing resources, typically 8GB of RAM or more and a modern multi-core CPU, to ensure smooth operation of demanding web applications, efficient rendering of intricate user interface components, and responsive interaction with large datasets that may be displayed in the browser.
+    \item \textbf{Display Resolution:} A minimum screen resolution of 1920x1080 pixels is advisable. This ensures that all components of the user interface, particularly the interactive workflow editor and the integrated annotation tools, are displayed comprehensively without excessive scrolling or scaling.
+\end{itemize}
+
+\subsection{Server-Side Requirements}
+This section outlines the infrastructure and software prerequisites for hosting and operating the platform's backend services and database.
+
+\subsubsection{Supabase Backend Infrastructure}
+The platform's backend is fundamentally architected around the \textbf{Supabase} ecosystem. This choice simplifies deployment and management by providing an integrated suite of services:
+\begin{itemize}
+    \item \textbf{PostgreSQL Database:} As the core data store, a PostgreSQL instance (version 12 or later recommended) is required. Supabase natively provides this, offering robust support for concurrent connections, efficient handling of JSONB data types for flexible configurations, and the execution of custom PL/pgSQL functions that encapsulate all backend business logic and workflow automation. Adequate and scalable disk space within the PostgreSQL environment is necessary to accommodate project data, tasks, annotations, and the comprehensive audit trail.
+    \item \textbf{Integrated Services:} Supabase natively includes \textbf{Supabase Auth} for robust user authentication and authorization, and \textbf{Supabase Realtime} for real-time data synchronization.
+    \item \textbf{System Automation:} The platform's automated workflow orchestration relies heavily on scheduled PostgreSQL functions acting as cron jobs. Supabase's architecture inherently supports the reliable execution of these functions at regular intervals, which is critical for triggering automated tasks assigned to virtual users and ensuring continuous workflow progression.
+\end{itemize}
+As an open-source platform, Supabase can be deployed as a managed cloud service or self-hosted, including via Docker container images, offering flexibility in infrastructure provisioning.
+
+\subsubsection{External System Integrations}
+The platform's comprehensive functionality is significantly enhanced through its ability to integrate with specialized external systems.
+\begin{itemize}
+    \item \textbf{Medical Imaging Archives (e.g., Orthanc):} For projects involving medical imaging data, network connectivity and appropriate API access permissions are required to integrate with external PACS (Picture Archiving and Communication System) or VNA (Vendor Neutral Archive) systems, such as Orthanc, for importing data items.
+    \item \textbf{Annotation Toolkits (e.g., OHIF Viewer, MONAI):} While these are typically client-side components or frameworks leveraged for specific annotation tasks, the backend may require configured endpoints or data exchange protocols to seamlessly interact with instances of OHIF Viewer or MONAI, whether they are hosted externally or bundled within the client environment.
+    \item \textbf{Machine Learning Models:} For advanced features like Model-Assisted Labeling (MITL), the backend requires stable network access to external machine learning model API endpoints. This includes consistent connectivity and valid API keys or authentication credentials to securely invoke these services for inference or prediction.
+\end{itemize}
+
+\subsubsection{Security \& Permissions}
+\begin{itemize}
+    \item \textbf{API Keys and Credentials Management:} Secure storage and management of API keys, access tokens, and other credentials for Supabase, external machine learning models, and any integrated third-party data sources (e.g., Orthanc) are paramount to maintaining system security.
+    \item \textbf{Network Configuration:} Appropriate firewall rules and network security policies must be implemented on the server infrastructure to allow only necessary inbound and outbound connections for the backend services and external integrations, while strictly adhering to a strong security posture.
+\end{itemize}
