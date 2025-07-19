@@ -383,13 +383,16 @@ bookmarksdepth=section,breaklinks=true]{hyperref}
 % Text-float spacing
 \setlength\intextsep{24pt}
 
+\mainmatter
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Your Malay and English abstracts, each in one file.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \input{abs-mal}
+\addtocontents{toc}{\protect\cftpagenumbersoff{chap}}
 \input{content/abs-eng}
-
-\mainmatter
+\addtocontents{toc}{\protect\cftpagenumberson{chap}}
+\setcounter{page}{1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % The actual chapters of your thesis as listed in
