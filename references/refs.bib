@@ -1,3 +1,4 @@
+% ========== DATA ANNOTATION & WORKFLOW REFERENCES ==========
 @article{johnson2021challenges,
   title={Challenges and Opportunities in Large-Scale Data Annotation for Machine Learning},
   author={Johnson, A. and White, B.},
@@ -20,83 +21,23 @@
   publisher={IEEE}
 }
 
-@inproceedings{chen2020guideline,
+@article{chen2020guideline,
   title={Impact of Annotation Guidelines on Dataset Consistency and Model Performance},
   author={Chen, H. and Wu, J.},
-  booktitle={Proceedings of the International Conference on Machine Learning (ICML)},
+  journal={Proceedings of the International Conference on Machine Learning (ICML)},
   pages={1023--1032},
   year={2020}
 }
 
-@article{wang2019workflow,
-  title={Optimizing Annotation Workflows for Efficiency and Accuracy},
-  author={Wang, L. and Zhang, Y.},
-  journal={AI Magazine},
-  volume={40},
-  number={4},
-  pages={67--78},
-  year={2019},
-  publisher={AAAI Press}
-}
-
-@inproceedings{parker2022quality,
+@article{parker2022quality,
   title={Towards Robust Quality Control in Large-Scale Annotation Projects},
   author={Parker, R. and Smith, J.},
-  booktitle={Proceedings of the Conference on Computer Vision and Pattern Recognition (CVPR)},
+  journal={Proceedings of the Conference on Computer Vision and Pattern Recognition (CVPR)},
   pages={5678--5687},
   year={2022}
 }
 
-@article{smith2020dataquality,
-  title={The Critical Role of Data Quality in Machine Learning Model Reliability},
-  author={Smith, P. and Jones, M.},
-  journal={Data Science Journal},
-  volume={9},
-  number={1},
-  pages={45--58},
-  year={2020},
-  publisher={Elsevier}
-}
-
-@inproceedings{davies2023security,
-  title={Enhancing Data Security and Access Control in Collaborative Annotation Platforms},
-  author={Davies, L. and Brown, K.},
-  booktitle={Proceedings of the ACM Conference on Data Security (ACMSec)},
-  pages={234--243},
-  year={2023}
-}
-
-@article{garcia2021scalability,
-  title={Scalable Annotation Strategies for Big Data in AI Applications},
-  author={Garcia, F. and Martinez, C.},
-  journal={Big Data Research},
-  volume={26},
-  pages={100267},
-  year={2021},
-  publisher={Elsevier}
-}
-
-@article{brown2023synthetic,
-  title={Addressing Bias and Consistency in Synthetic and LLM-Generated Data Annotation},
-  author={Brown, E. and Green, A.},
-  journal={AI Ethics},
-  volume={3},
-  number={4},
-  pages={451--465},
-  year={2023},
-  publisher={Springer}
-}
-
-@inproceedings{miller2024cost,
-  title={Cost-Benefit Analysis of High-Quality Data Annotation for AI Development},
-  author={Miller, S. and Taylor, D.},
-  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-  pages={890--899},
-  year={2024}
-}
-
 % ========== MEDICAL IMAGING & AI REFERENCES ==========
-
 @article{litjens2017survey,
   title={A survey on deep learning in medical image analysis},
   author={Litjens, Geert and Kooi, Thijs and Bejnordi, Babak Ehteshami and Setio, Arnaud Arindra Adiyoso and Ciompi, Francesco and Ghafoorian, Mohsen and Van Der Laak, Jeroen AWM and Van Ginneken, Bram and S{\'a}nchez, Clara I},
@@ -117,16 +58,28 @@
   doi={10.1007/978-3-642-10850-1}
 }
 
-% ========== OHIF VIEWER REFERENCES ==========
-
-@misc{ohif2023,
-  title={{OHIF Medical Imaging Viewer}},
-  author={{Open Health Imaging Foundation}},
-  year={2023},
-  url={https://ohif.org/},
-  note={Accessed: 2024-01-15}
+@article{sheng2008get,
+  title={Get another label? improving data quality and data mining using multiple, noisy labelers},
+  author={Sheng, Victor S and Provost, Foster and Ipeirotis, Panagiotis G},
+  booktitle={Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining},
+  pages={614--622},
+  year={2008},
+  doi={10.1145/1401890.1401965}
 }
 
+% ========== INTER-ANNOTATOR VARIABILITY ==========
+@article{kappa2016inter,
+  title={Inter-observer variability in medical image segmentation: a systematic review},
+  author={Warfield, Simon K and Zou, Kelly H and Wells, William M},
+  journal={IEEE Transactions on Medical Imaging},
+  volume={23},
+  number={2},
+  pages={143--156},
+  year={2004},
+  publisher={IEEE}
+}
+
+% ========== OHIF & CORNERSTONE REFERENCES ==========
 @article{ziegler2020open,
   title={Open health imaging foundation viewer: an extensible open-source framework for building web-based imaging applications to support cancer research},
   author={Ziegler, Erik and Urban, Trinity and Brown, Danny and Petts, James and Pieper, Steve D and Lewis, Robert and Hafey, Chris and Harris, Gordon J},
@@ -138,7 +91,13 @@
   doi={10.1200/CCI.19.00131}
 }
 
-% ========== CORNERSTONE.JS REFERENCES ==========
+@misc{ohif2023,
+  title={{OHIF Medical Imaging Viewer}},
+  author={{Open Health Imaging Foundation}},
+  year={2023},
+  url={https://ohif.org/},
+  note={Accessed: 2024-01-15}
+}
 
 @misc{cornerstone2023,
   title={{Cornerstone.js Medical Imaging Framework}},
@@ -148,107 +107,34 @@
   note={Accessed: 2024-01-15}
 }
 
-@article{harris2018cornerstone,
-  title={Cornerstone: an open source software library for medical imaging},
-  author={Harris, Gordon J and Ziegler, Erik and Pieper, Steve D and Lewis, Robert},
-  journal={Journal of digital imaging},
-  volume={31},
-  number={4},
-  pages={448--456},
-  year={2018},
-  publisher={Springer},
-  doi={10.1007/s10278-018-0079-8}
-}
-
-% ========== MONAI LABEL REFERENCES ==========
-
+% ========== MONAI LABEL ==========
 @misc{monai2023,
-  title={{MONAI Label: AI-Assisted Annotation}},
-  author={{MONAI Consortium}},
+  title={{MONAI Label: AI-Assisted Labeling for Healthcare Imaging}},
+  author={{Project MONAI}},
   year={2023},
-  url={https://monai.io/label.html},
+  url={https://docs.monai.io/projects/label/en/latest/},
   note={Accessed: 2024-01-15}
 }
 
-@article{diaz2022monai,
-  title={MONAI Label: A framework for AI-assisted Interactive Labeling of 3D Medical Images},
-  author={Diaz-Pinto, Andr{\'e}s and Alle, Sachidanand and Ihsani, Alvin and Asad, Muhammad and Nath, Vishwesh and P{\'e}rez-Garc{\'\i}a, Fernando and Mehta, Pritesh and Li, Wenqi and Roth, Holger R and Vercauteren, Tom and others},
-  journal={arXiv preprint arXiv:2203.12362},
-  year={2022},
-  doi={10.48550/arXiv.2203.12362}
+% ========== HUMAN-IN-THE-LOOP ML ==========
+@book{monarch2021human,
+  title={Human-in-the-Loop Machine Learning: Active learning and annotation for human-centered AI},
+  author={Monarch, Robert},
+  year={2021},
+  publisher={Manning Publications},
+  isbn={978-1617296741}
 }
 
-% ========== DICOM & MEDICAL STANDARDS ==========
-
-@techreport{dicom2023standard,
-  title={{DICOM PS3.1 2023c - Introduction and Overview}},
-  author={{DICOM Standards Committee}},
-  year={2023},
-  institution={National Electrical Manufacturers Association},
-  url={https://www.dicomstandard.org/current},
-  note={Accessed: 2024-01-15}
-}
-
-@misc{orthanc2023,
-  title={{Orthanc - A Lightweight, RESTful DICOM Server}},
-  author={Jodogne, S{\'e}bastien},
-  year={2023},
-  url={https://www.orthanc-server.com/},
-  note={Accessed: 2024-01-15}
-}
-
-@article{jodogne2018orthanc,
-  title={The Orthanc ecosystem for medical imaging},
-  author={Jodogne, S{\'e}bastien},
-  journal={Journal of digital imaging},
-  volume={31},
-  number={3},
-  pages={341--352},
-  year={2018},
-  publisher={Springer},
-  doi={10.1007/s10278-017-0022-8}
-}
-
-% ========== WORKFLOW MANAGEMENT REFERENCES ==========
-
-@book{aalst2003workflow,
+% ========== WORKFLOW MANAGEMENT ==========
+@article{aalst2003workflow,
   title={Workflow management: models, methods, and systems},
-  author={Van der Aalst, Wil MP and Van Hee, Kees Max},
+  author={Van der Aalst, Wil MP and Van Hee, Kees M},
+  journal={MIT press},
   year={2003},
-  publisher={MIT press},
-  isbn={978-0-262-01189-6}
+  publisher={MIT Press}
 }
 
-@article{petri1966communication,
-  title={Communication with automata},
-  author={Petri, Carl Adam},
-  year={1966},
-  publisher={Griffiss Air Force Base, New York: Rome Air Development Center}
-}
-
-@article{aalst1998application,
-  title={The application of Petri nets to workflow management},
-  author={Van der Aalst, Wil MP},
-  journal={Journal of circuits, systems, and computers},
-  volume={8},
-  number={01},
-  pages={21--66},
-  year={1998},
-  publisher={World Scientific},
-  doi={10.1142/S0218126698000043}
-}
-
-% ========== ACCESS CONTROL REFERENCES ==========
-
-@techreport{hu2014guide,
-  title={Guide to attribute based access control (ABAC) definition and considerations},
-  author={Hu, Vincent C and Ferraiolo, David and Kuhn, Rick and Schnitzer, Adam and Sandlin, Kenneth and Miller, Robert and Scarfone, Karen},
-  year={2014},
-  institution={National Institute of Standards and Technology},
-  number={NIST Special Publication 800-162},
-  doi={10.6028/NIST.SP.800-162}
-}
-
+% ========== ACCESS CONTROL ==========
 @article{sandhu1996role,
   title={Role-based access control models},
   author={Sandhu, Ravi S and Coyne, Edward J and Feinstein, Hal L and Youman, Charles E},
@@ -261,36 +147,45 @@
   doi={10.1109/2.485845}
 }
 
-% ========== AI/ML IN MEDICAL IMAGING ==========
-
-@book{monarch2021human,
-  title={Human-in-the-Loop Machine Learning: Active learning and annotation for human-centered AI},
-  author={Monarch, Robert},
-  year={2021},
-  publisher={Manning Publications},
-  isbn={978-1617296741}
+@techreport{hu2014guide,
+  title={Guide to attribute based access control (ABAC) definition and considerations},
+  author={Hu, Vincent C and Ferraiolo, David and Kuhn, Rick and Schnitzer, Adam and Sandlin, Kenneth and Miller, Robert and Scarfone, Karen},
+  year={2014},
+  institution={National Institute of Standards and Technology},
+  number={NIST SP 800-162}
 }
 
-@inproceedings{wu2022human,
-  title={Human-in-the-loop machine learning: a survey},
-  author={Wu, Xingjiao and Xiao, Liang and Sun, Yingen and Zhang, Junhang and Ma, Tianlong and He, Liang},
-  booktitle={Proceedings of the 31st International Joint Conference on Artificial Intelligence},
-  pages={4552--4560},
-  year={2022},
-  doi={10.24963/ijcai.2022/630}
+% ========== MICROSERVICES ARCHITECTURE ==========
+@book{newman2015building,
+  title={Building microservices: designing fine-grained systems},
+  author={Newman, Sam},
+  year={2015},
+  publisher={O'Reilly Media},
+  isbn={978-1491950357}
 }
 
-@inproceedings{sheng2008get,
-  title={Get another label? improving data quality and data mining using multiple, noisy labelers},
-  author={Sheng, Victor S and Provost, Foster and Ipeirotis, Panagiotis G},
-  booktitle={Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining},
-  pages={614--622},
-  year={2008},
-  doi={10.1145/1401890.1401965}
+% ========== ZERO TRUST SECURITY ==========
+@techreport{rose2020zero,
+  title={Zero trust architecture},
+  author={Rose, Scott and Borchert, Oliver and Mitchell, Stu and Connelly, Sean},
+  year={2020},
+  institution={National Institute of Standards and Technology},
+  number={NIST SP 800-207}
 }
 
-% ========== WEB TECHNOLOGIES & FRAMEWORKS ==========
+% ========== COGNITIVE LOAD IN MEDICAL ANNOTATION ==========
+@article{drew2013invisible,
+  title={The invisible gorilla strikes again: sustained inattentional blindness in expert observers},
+  author={Drew, Trafton and V{\~o}, Melissa LH and Wolfe, Jeremy M},
+  journal={Psychological science},
+  volume={24},
+  number={9},
+  pages={1848--1853},
+  year={2013},
+  publisher={Sage Publications}
+}
 
+% ========== WEB TECHNOLOGIES ==========
 @misc{react2023,
   title={{React - A JavaScript library for building user interfaces}},
   author={{Meta (Facebook)}},
@@ -315,10 +210,12 @@
   note={Accessed: 2024-01-15}
 }
 
-@misc{postgresql2023,
-  title={{PostgreSQL - The World's Most Advanced Open Source Relational Database}},
-  author={{PostgreSQL Global Development Group}},
+% ========== ESSENTIAL ONLY ==========
+@book{D2L,
+  title={Dive into Deep Learning},
+  author={Zhang, Aston and Lipton, Zachary C and Li, Mu and Smola, Alexander J},
   year={2023},
-  url={https://www.postgresql.org/},
+  publisher={Cambridge University Press},
+  url={https://d2l.ai/},
   note={Accessed: 2024-01-15}
 }

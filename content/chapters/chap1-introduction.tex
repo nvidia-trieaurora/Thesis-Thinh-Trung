@@ -1,0 +1,126 @@
+\chapter{Introduction}
+
+\section{Problem Overview}
+
+The rapid advancement of artificial intelligence (AI) has revolutionized numerous sectors, with healthcare emerging as one of the most promising domains for transformative applications. In medical imaging, AI technologies have demonstrated remarkable potential in diagnosis, treatment planning, and patient care optimization. However, the success of AI systems in healthcare fundamentally depends on the availability of high-quality, accurately labeled medical data.
+
+Medical imaging modalities such as Computed Tomography (CT), Magnetic Resonance Imaging (MRI), and other DICOM-compliant formats generate vast amounts of complex data daily. The process of annotating this data—identifying and labeling anatomical structures, pathological conditions, and regions of interest—remains a critical bottleneck in the development of robust AI systems for healthcare applications.
+
+The current medical data annotation process presents significant challenges that limit the scalability and effectiveness of AI deployment in clinical settings. Traditional annotation workflows rely heavily on manual intervention from medical experts, creating dependencies that are difficult to scale and maintain consistently across large datasets.
+
+In the Vietnamese healthcare context, these challenges are particularly pronounced due to resource constraints, varying levels of technical infrastructure, and the need for solutions that can adapt to local medical practices and terminology. The development of an intelligent annotation system tailored for medical imaging data represents a crucial step toward addressing these limitations and enabling more widespread adoption of AI technologies in Vietnamese healthcare institutions.
+
+\section{Research Motivation}
+
+\subsection{Limitations of Current Manual Annotation Processes}
+
+The traditional approach to medical data annotation involves highly trained medical professionals manually reviewing and labeling medical images. This process, while ensuring high accuracy, suffers from several critical limitations:
+
+\textbf{Time Consumption and Resource Intensity:} Manual annotation of medical images is an extremely time-consuming process. A single CT scan containing hundreds of slices may require several hours of expert annotation time, making it impractical to scale for large datasets required by modern AI systems.
+
+\textbf{Inter-annotator Variability:} Different medical experts may interpret and label the same anatomical structures or pathological findings differently, leading to inconsistencies in the resulting datasets. This variability can negatively impact the performance and reliability of AI models trained on such data.
+
+\textbf{Cost and Availability of Expertise:} Medical imaging annotation requires specialized knowledge that is expensive and often scarce. The limited availability of qualified medical professionals creates bottlenecks in data preparation pipelines.
+
+\textbf{Fatigue and Human Error:} Extended annotation sessions can lead to fatigue-induced errors, particularly when dealing with complex 3D medical images that require sustained attention and precision.
+
+\subsection{Need for Intelligent Support Systems}
+
+The limitations of manual annotation processes have created an urgent need for intelligent support systems that can:
+
+\textbf{Accelerate Annotation Workflows:} By providing AI-assisted suggestions and automated preliminary annotations, intelligent systems can significantly reduce the time required for expert review and validation.
+
+\textbf{Enhance Consistency:} Standardized AI assistance can help reduce inter-annotator variability by providing consistent baseline annotations that experts can refine and validate.
+
+\textbf{Scale Annotation Capacity:} Intelligent systems can enable smaller teams of medical experts to handle larger volumes of data by automating routine aspects of the annotation process.
+
+\textbf{Reduce Cognitive Load:} By handling repetitive or straightforward annotation tasks, AI assistance can allow medical experts to focus on complex cases requiring specialized knowledge and judgment.
+
+\subsection{Vietnamese Healthcare Context and Practical Requirements}
+
+The Vietnamese healthcare system presents unique requirements and constraints that must be addressed in developing annotation support systems:
+
+\textbf{Resource Optimization:} Healthcare institutions in Vietnam often operate with limited budgets and technical resources, necessitating cost-effective solutions that maximize value and efficiency.
+
+\textbf{Integration with Existing Systems:} Any annotation system must be compatible with existing medical imaging infrastructure and workflows commonly found in Vietnamese hospitals and clinics.
+
+\textbf{Local Adaptation:} The system must accommodate Vietnamese medical terminology, local clinical practices, and regulatory requirements specific to the Vietnamese healthcare environment.
+
+\textbf{Training and Adoption:} Solutions must be designed with user-friendly interfaces that facilitate adoption by medical professionals with varying levels of technical expertise.
+
+\section{Objectives and Contributions}
+
+\subsection{Primary Objectives}
+
+This thesis aims to develop a comprehensive intelligent annotation system for medical imaging data that addresses the challenges outlined above. The primary objectives include:
+
+\textbf{Objective 1: Develop an Integrated Annotation Platform}
+Create a unified platform that combines state-of-the-art medical image viewing capabilities with AI-assisted annotation tools, providing an intuitive interface for medical professionals to efficiently annotate complex medical imaging data.
+
+\textbf{Objective 2: Implement AI-Assisted Segmentation}
+Integrate advanced AI models, including foundation models like VISTA3D and interactive segmentation tools, to provide intelligent assistance in identifying and segmenting anatomical structures and pathological findings.
+
+\textbf{Objective 3: Design Flexible Workflow Management}
+Implement a robust workflow management system that supports various annotation workflows, task assignment, quality control processes, and collaborative annotation scenarios.
+
+\textbf{Objective 4: Ensure System Scalability and Integration}
+Design the system architecture to support scalability and integration with existing medical imaging infrastructure, including PACS systems and DICOM-compliant storage solutions.
+
+\subsection{Specific Contributions}
+
+This research makes the following specific contributions to the field of medical data annotation:
+
+\textbf{Technical Contributions:}
+\begin{itemize}
+    \item Integration of multiple open-source medical imaging tools (OHIF Viewer, MONAI Label, Orthanc) into a cohesive annotation platform
+    \item Implementation of a flexible workflow engine supporting complex annotation pipelines with AI assistance
+    \item Development of real-time collaborative annotation features enabling multiple experts to work simultaneously
+    \item Creation of an adaptive AI assistance system that learns from user interactions and improves over time
+\end{itemize}
+
+\textbf{Practical Contributions:}
+\begin{itemize}
+    \item Demonstration of significant time reduction in medical image annotation workflows
+    \item Provision of a user-friendly interface designed specifically for medical professionals
+    \item Implementation of quality control mechanisms ensuring annotation accuracy and consistency
+    \item Development of a deployment-ready system suitable for Vietnamese healthcare institutions
+\end{itemize}
+
+\textbf{Research Contributions:}
+\begin{itemize}
+    \item Comprehensive analysis of current medical annotation challenges and requirements
+    \item Evaluation of AI-assisted annotation effectiveness in real-world medical imaging scenarios
+    \item Guidelines for integrating AI assistance into existing medical workflows
+    \item Framework for future extension to additional medical imaging modalities and clinical applications
+\end{itemize}
+
+\subsection{Scope and Limitations}
+
+\textbf{Scope of Research:}
+This research focuses on developing an annotation system primarily for CT and MRI imaging modalities using DICOM format. The system targets common annotation tasks including organ segmentation, lesion identification, and anatomical structure labeling. The implementation concentrates on creating a functional prototype suitable for deployment in Vietnamese healthcare settings.
+
+\textbf{Research Limitations:}
+\begin{itemize}
+    \item The system is primarily validated on specific medical imaging datasets and may require adaptation for other imaging modalities
+    \item AI model performance is dependent on the quality and diversity of training data available
+    \item The study does not include comprehensive clinical validation across multiple healthcare institutions
+    \item Integration testing is limited to common PACS systems and may require customization for specialized medical imaging infrastructure
+\end{itemize}
+
+\section{Thesis Organization}
+
+This thesis is organized into six chapters that systematically address the research objectives and present the developed solution:
+
+\textbf{Chapter 1: Introduction} provides an overview of the research problem, motivation, objectives, and contributions. It establishes the context for medical data annotation challenges and outlines the approach taken in this research.
+
+\textbf{Chapter 2: Literature Review and Related Work} examines existing research in medical data annotation techniques, current annotation support systems, AI applications in medical imaging, and workflow management solutions. This chapter identifies gaps in current approaches and establishes the theoretical foundation for the proposed solution.
+
+\textbf{Chapter 3: Problem Analysis and Proposed Solution} presents a detailed analysis of medical annotation challenges and introduces the proposed intelligent annotation system. It defines system requirements, presents the overall solution architecture, and explains the integration approach.
+
+\textbf{Chapter 4: Detailed System Design} describes the technical implementation of the proposed system, including detailed architecture design, individual module specifications, technology stack selection, and integration strategies. This chapter provides the technical foundation for system implementation.
+
+\textbf{Chapter 5: Implementation and Evaluation} presents the practical implementation of the system, deployment considerations, performance evaluation results, and case studies demonstrating the system's effectiveness. It includes quantitative and qualitative analysis of the system's impact on annotation workflows.
+
+\textbf{Chapter 6: Conclusion and Future Work} summarizes the research contributions, discusses limitations and challenges encountered, and outlines directions for future research and development. It concludes with an assessment of the system's potential impact on medical AI annotation practices.
+
+The thesis also includes technical appendices providing detailed system specifications, user guides, and additional implementation details to support future development and deployment efforts. 

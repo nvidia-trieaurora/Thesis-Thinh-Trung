@@ -1,0 +1,22 @@
+\section{Problem 1: Inflexible Workflow Management}
+\label{sec:problem-workflow}
+
+\subsection{What: The Need for Dynamic Annotation Workflows}
+Medical data annotation is not a monolithic task but a multi-stage process involving ingestion, pre-processing, AI-assisted labeling, human review, and consensus-building. A robust platform must therefore support dynamic, configurable workflows that can model these complex interactions. This requires an engine capable of defining, executing, and monitoring directed acyclic graphs (DAGs) of tasks, where each node represents a specific stage (e.g., `ANNOTATE`, `REVIEW`, `MITL`) and edges define the flow of data and control.
+
+\subsection{Why: Limitations of Linear and Hardcoded Workflows}
+Existing platforms like Label Studio often rely on linear or hardcoded workflows. This rigidity poses significant challenges in medical contexts:
+\begin{itemize}
+    \item \textbf{Lack of Adaptability}: They cannot accommodate project-specific requirements, such as adding a consensus stage for clinical trials or a specialized AI model for a rare pathology.
+    \item \textbf{Inefficient Task Orchestration}: It is difficult to implement conditional logic (e.g., routing low-confidence AI segmentations for expert review) or parallel execution (multiple annotators working on the same study).
+    \item \textbf{Poor Integration}: Data hand-offs between separate tools (e.g., from an AI server to a viewer) are manual and error-prone, disrupting the annotation flow.
+\end{itemize}
+
+\subsection{How: A Graph-Based Workflow Engine}
+Our solution is a custom-built, graph-based workflow engine implemented within the `latn-5` management application.
+\begin{itemize}
+    \item \textbf{Core Technology}: The backend leverages \textbf{Supabase} with PostgreSQL functions (`plpgsql`) to ensure atomic state transitions and data integrity. The `workflows_create` function, for example, translates a graph definition from the frontend into relational database entries for stages and connections.
+    \item \textbf{Visual Orchestration}: The frontend utilizes \textbf{React Flow} to provide a drag-and-drop interface for composing workflows. Project managers can visually define stages, connect them with edges, and configure parameters for each node (e.g., number of reviewers, AI model endpoint).
+    \item \textbf{State Management}: The engine tracks the state of each task as it progresses through the workflow graph. Core tables like `_workflows`, `_workflow_stages`, and `_task_assignments` store the definitions and real-time status, enabling full traceability.
+\end{itemize}
+This architecture provides the flexibility to design and execute bespoke annotation pipelines tailored to the complex demands of medical research and clinical applications. 
