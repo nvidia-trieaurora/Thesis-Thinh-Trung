@@ -4,20 +4,44 @@
 
 \subsection{Microservices Architecture Overview}
 
-The intelligent medical annotation system implements a microservices architecture that provides scalability, maintainability, and fault tolerance while ensuring optimal performance for medical imaging workflows \cite{newman2015building}. This architectural approach enables independent development, deployment, and scaling of individual system components while maintaining strong integration and data consistency.
+Deploying a complex medical annotation system in healthcare environments presents significant challenges that necessitate a microservices architecture approach \cite{newman2015building}. Traditional monolithic systems that bundle all functionality into a single application create operational bottlenecks and deployment complexities that are particularly problematic in medical imaging workflows where reliability, scalability, and integration flexibility are critical.
 
-\textbf{Service Decomposition Strategy:} The system is decomposed into four primary microservices, each responsible for a specific domain of functionality:
+\textbf{Critical Need for Microservices Architecture:} Medical annotation systems must address diverse institutional requirements where different healthcare facilities have varying levels of technical infrastructure, IT expertise, and computational resources. The heterogeneous nature of medical imaging environments demands an architecture that can optimize resource utilization while maintaining system reliability. A microservices approach becomes essential to enable:
 
 \begin{itemize}
-    \item \textit{Workflow Management Service (latn-5):} Handles project management, task assignment, user management, and workflow orchestration
-    \item \textit{Annotation Interface Service (latn-3-ohif3):} Provides medical image visualization, annotation tools, and user interface components
-    \item \textit{AI Assistance Service (MONAI Label):} Delivers AI-powered segmentation, interactive annotation support, and model management
-    \item \textit{Data Management Service (Orthanc):} Manages DICOM storage, metadata indexing, and medical image retrieval
+    \item \textbf{Optimized Resource Allocation:} Deploy only necessary components, dramatically reducing hardware requirements and operational costs while maintaining full functionality
+    \item \textbf{Dynamic Scaling Capability:} Scale individual services independently based on real-time demand patterns (e.g., additional viewer instances during peak annotation periods, expanded AI processing during batch operations)
+    \item \textbf{Zero-Downtime Maintenance:} Update, patch, or maintain services independently without disrupting ongoing annotation workflows, ensuring continuous availability for critical medical operations
+    \item \textbf{Seamless Legacy Integration:} Integrate with existing hospital information systems through standardized APIs without requiring wholesale infrastructure replacement
+    \item \textbf{Fault Isolation and Recovery:} Handle component failures gracefully with automatic failover capabilities, preventing single points of failure from compromising entire annotation workflows
+    \item \textbf{Performance Optimization:} Optimize each service for its specific computational requirements (e.g., GPU acceleration for AI services, high-throughput storage for DICOM data)
 \end{itemize}
 
-\textbf{Inter-Service Communication:} Services communicate through a combination of synchronous REST APIs for immediate operations and asynchronous message queues for workflow coordination and data processing tasks. This hybrid approach ensures both responsiveness and reliability in different operational scenarios.
+\textbf{Strategic Service Decomposition:} The architecture is strategically decomposed into four specialized services, each optimized for specific functional domains and performance characteristics:
 
-\textbf{Service Discovery and Load Balancing:} The architecture implements dynamic service discovery using container orchestration platforms, enabling automatic load balancing and failover capabilities. This design ensures high availability and optimal resource utilization across the system.
+\begin{itemize}
+    \item \textbf{Workflow Management Service (latn-5):} React-based platform using Supabase for real-time collaboration, handling project creation, task assignment, user management, and workflow orchestration
+    \item \textbf{Annotation Interface Service (latn-3-ohif3):} Enhanced OHIF Viewer providing medical image visualization, annotation tools, AI integration, and collaborative features
+    \item \textbf{AI Assistance Service (MONAI Label):} Containerized AI engine delivering foundation model support, interactive segmentation, and model-in-the-loop learning capabilities
+    \item \textbf{Data Management Service (Orthanc PACS):} DICOM-compliant storage system managing medical image storage, metadata indexing, and integration with existing hospital PACS infrastructure
+\end{itemize}
+
+\textbf{Intelligent Communication Architecture:} Services communicate through optimized API patterns that minimize latency and maximize throughput in medical imaging workflows. The system implements smart caching, connection pooling, and request batching to ensure optimal performance. For instance, when a user opens a medical study, the system orchestrates parallel data retrieval from multiple services while prefetching likely-needed resources, resulting in significantly faster load times and improved user experience.
+
+\textbf{Adaptive Deployment Optimization:} The microservices architecture enables deployment strategies that can be precisely matched to available infrastructure and performance requirements. This flexibility allows for optimization ranging from lightweight containerized deployments for resource-constrained environments to distributed cloud-native deployments that can scale dynamically based on demand, ensuring optimal performance-to-cost ratios across diverse operational scenarios.
+
+\textbf{Continuous Performance Enhancement:} The modular nature enables targeted optimization of individual components without affecting the entire system. This allows for iterative performance improvements, technology stack upgrades, and feature enhancements while maintaining system stability and backward compatibility, ensuring the annotation platform can evolve with advancing medical imaging requirements and technological innovations.
+
+Figure 4.1 illustrates the complete system architecture, demonstrating the end-to-end flow of the intelligent medical annotation system from user access through various integrated services, highlighting how the microservices architecture enables scalable, maintainable, and fault-tolerant medical imaging workflows.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{content/resources/images/chap4-system-design/system-architecture.png}
+\caption{Complete System Architecture - The intelligent medical annotation system architecture showing the comprehensive flow from user interaction through the Nginx reverse proxy to the React frontend, which integrates with multiple backend services including Supabase for real-time data management, OHIF Viewer for medical image visualization, and external services (MONAI Label and Orthanc DICOM Server) for AI assistance and medical data storage.}
+\label{fig:system-architecture}
+\end{figure}
+
+The system architecture demonstrates several key optimization principles: the Nginx reverse proxy provides load balancing and SSL termination, the React frontend enables responsive user interfaces with real-time updates, Supabase delivers managed database services with built-in authentication and real-time capabilities, while external integrations with MONAI Label and Orthanc ensure specialized AI processing and DICOM compliance without adding complexity to the core system. This architectural approach maximizes performance while minimizing operational overhead.
 
 \subsection{Component Interaction Design}
 
