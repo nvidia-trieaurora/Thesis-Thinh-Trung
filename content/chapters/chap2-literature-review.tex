@@ -76,23 +76,19 @@ Encord represents the commercial state-of-the-art in annotation workflow managem
 \centering
 \caption{Comparison of Current Annotation Support Systems}
 \label{tab:system-comparison}
-\begin{tabular}{|p{2.5cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
+\begin{tabular}{|p{2.5cm}|p{3cm}|p{3cm}|p{3cm}|}
 \hline
-\textbf{Feature} & \textbf{OHIF Viewer} & \textbf{MONAI Label} & \textbf{Encord} & \textbf{Ideal System} \\
+\textbf{Feature} & \textbf{OHIF Viewer} & \textbf{MONAI Label} & \textbf{Encord} \\
 \hline
-Medical Imaging Support & Excellent & Good & Limited & Excellent \\
+Medical Imaging Support & Excellent & Good & Limited \\
 \hline
-AI Assistance & None & Excellent & Limited & Excellent \\
+AI Assistance & None & Excellent & Limited \\
 \hline
-Workflow Management & Basic & None & Excellent & Excellent \\
+Workflow Management & Basic & None & Excellent \\
 \hline
-DICOM Integration & Excellent & Good & None & Excellent \\
+DICOM Integration & Excellent & Good & None \\
 \hline
-Collaborative Features & Limited & None & Excellent & Excellent \\
-\hline
-Open Source & Yes & Yes & No & Yes \\
-\hline
-Customization & High & High & Limited & High \\
+Collaborative Features & Limited & None & Excellent \\
 \hline
 \end{tabular}
 \end{table}
@@ -129,7 +125,7 @@ Recent advances in foundation models have revolutionized the landscape of medica
 
 \textbf{Transfer Learning and Adaptation:} Foundation models enable efficient adaptation to new medical imaging tasks through transfer learning approaches. This capability allows the rapid deployment of AI assistance for new anatomical regions or pathological conditions without requiring extensive training data.
 
-\textbf{Zero-Shot and Few-Shot Learning:} Advanced foundation models demonstrate zero-shot and few-shot learning capabilities, enabling annotation assistance for previously unseen anatomical structures or rare pathological conditions with minimal training examples.
+\textbf{MONAI-Based AI Annotation Approaches:} Modern AI annotation systems leverage multiple interaction paradigms implemented in MONAI framework. \textit{Auto-Segmentation} provides fully automated initial segmentation using pre-trained foundation models, enabling rapid baseline annotations across multiple anatomical structures. \textit{Class Prompts} allow users to specify target anatomical structures or pathological findings through text-based or categorical inputs, guiding the AI model to focus on specific regions of interest. \textit{Point Prompts} enable interactive refinement through user-provided click points, where positive clicks indicate target regions and negative clicks exclude unwanted areas, allowing for precise manual guidance of the automated segmentation process. This multi-modal approach combines the efficiency of automated processing with the precision of expert-guided interaction.
 
 \section{Workflow Management in Healthcare}
 
@@ -165,38 +161,22 @@ Effective collaboration tools are essential for managing distributed annotation 
 
 \section{Research Gap Analysis}
 
-\subsection{Limitations of Current Approaches}
+\subsection{Current System Limitations}
 
-The analysis of existing medical annotation systems reveals several significant limitations that create opportunities for improvement:
+Analysis of existing annotation systems reveals key practical limitations:
 
-\textbf{Fragmented Solutions:} Current solutions typically excel in specific areas but fail to provide comprehensive coverage of all annotation workflow requirements. Users must integrate multiple systems, leading to complexity and inefficiency.
+\textbf{System Fragmentation:} Healthcare institutions typically use separate tools for image viewing (OHIF), AI assistance (MONAI Label), and workflow management (manual processes), requiring complex integration and causing inefficiencies.
 
-\textbf{Limited AI Integration:} While AI-assisted annotation tools exist, their integration with comprehensive workflow management and collaborative features remains limited. Most systems treat AI assistance as an add-on rather than a core component of the annotation workflow.
+\textbf{Workflow Management Gaps:} Current systems lack structured task assignment, progress monitoring, and quality control mechanisms essential for hospital environments. MONAI Label provides AI capabilities but no workflow coordination, while OHIF offers excellent viewing but minimal collaboration features.
 
-\textbf{Scalability Challenges:} Many current solutions struggle with scalability, either in terms of the number of users, the volume of data, or the complexity of annotation workflows. This limitation restricts their applicability to large-scale annotation projects.
+\textbf{Integration Complexity:} Implementing AI-assisted annotation in hospital settings requires significant technical expertise to connect PACS systems, configure AI models, and maintain consistent data formats across different platforms.
 
-\textbf{Customization Complexity:} While many systems offer customization capabilities, the complexity of implementing and maintaining customizations often exceeds the capabilities of healthcare institutions, limiting adoption and effectiveness.
+\subsection{Research Opportunities}
 
-\subsection{Integration and Interoperability Gaps}
+These limitations create specific opportunities addressed in this research:
 
-Current medical annotation systems suffer from significant integration and interoperability challenges:
+\textbf{Integrated Platform:} Combining OHIF's medical imaging capabilities with MONAI's AI assistance and adding comprehensive workflow management into a unified system designed for Vietnamese healthcare contexts.
 
-\textbf{PACS Integration Complexity:} While many systems claim PACS compatibility, the practical implementation of seamless integration with existing hospital infrastructure remains challenging and often requires significant technical expertise.
+\textbf{Practical Deployment:} Developing a solution that can be readily deployed at institutions like Thong Nhat Hospital without requiring extensive technical infrastructure or specialized IT support.
 
-\textbf{Data Format Inconsistencies:} Different systems use varying data formats and standards for storing annotations, making it difficult to transfer annotations between systems or maintain long-term accessibility.
-
-\textbf{Workflow Incompatibility:} Existing systems often impose their own workflow paradigms, making it difficult to adapt them to established institutional practices and procedures.
-
-\subsection{Opportunities for Innovation}
-
-The identified limitations create several opportunities for innovative solutions:
-
-\textbf{Unified Platform Development:} There is a clear need for a unified platform that integrates medical image viewing, AI-assisted annotation, workflow management, and collaborative features into a cohesive solution.
-
-\textbf{Adaptive AI Integration:} Opportunities exist for developing more sophisticated AI integration approaches that adapt to institutional requirements and learn from user interactions over time.
-
-\textbf{Simplified Deployment and Maintenance:} There is significant value in developing solutions that can be easily deployed and maintained by healthcare institutions without requiring extensive technical expertise.
-
-\textbf{Enhanced Interoperability:} Developing solutions with enhanced interoperability features that can seamlessly integrate with existing healthcare infrastructure would significantly increase adoption and effectiveness.
-
-The research presented in this thesis addresses these opportunities by developing an integrated intelligent annotation system that combines the strengths of existing approaches while addressing their limitations through innovative integration and design approaches. 
+\textbf{Collaborative Workflows:} Implementing real-time collaboration features, structured review processes, and communication tools specifically designed for medical annotation teams working on complex clinical cases. 
