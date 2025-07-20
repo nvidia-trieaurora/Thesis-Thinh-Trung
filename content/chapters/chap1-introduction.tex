@@ -2,53 +2,11 @@
 
 \section{Problem Overview}
 
-In Vietnamese healthcare institutions, medical imaging data annotation represents a significant operational challenge that hinders the advancement of AI-assisted diagnostic capabilities. Major hospitals and medical centers across Vietnam generate thousands of CT and MRI studies monthly, yet lack efficient systems for creating the high-quality labeled datasets necessary for developing and deploying AI diagnostic tools.
+In the context of increasing demand for high-quality annotated medical imaging datasets to support research and the development of AI-assisted diagnostic applications, the current data annotation process at many hospitals in Vietnam still faces several practical challenges. Specifically, the majority of annotation tasks remain heavily reliant on manual efforts from radiologists, resulting in significant time consumption and resource constraints, especially for complex cases involving detailed analysis of multi-slice CT and MRI scans. Furthermore, there is a lack of a structured and coherent workflow management system, with limited task assignment mechanisms and progress monitoring capabilities. This leads to fragmented coordination among annotation team members and limits the efficiency of human resources. Additionally, communication and professional feedback between radiologists and annotation staff are often not sufficiently facilitated, posing difficulties in handling complex clinical cases.
 
-Current annotation practices in Vietnamese healthcare settings rely on manual processes where radiologists and medical imaging specialists spend 2-4 hours per complex case, annotating anatomical structures and pathological findings slice by slice. This approach creates several critical bottlenecks: first, the limited pool of qualified medical imaging specialists in Vietnam results in annotation backlogs that can extend for months; second, inconsistency between different annotators leads to variable dataset quality that affects AI model reliability; third, the absence of collaborative tools means that complex cases cannot benefit from multi-expert consensus, reducing diagnostic confidence.
+Moreover, the potential of modern AI-powered tools remains underutilized in practical workflows, as most annotation tasks continue to be performed manually, even in scenarios where automation could be effectively applied.
 
-The fragmented nature of existing annotation tools exacerbates these challenges. Medical professionals typically use separate applications for image viewing (such as basic DICOM viewers), annotation (often basic drawing tools), and data management (manual file organization), requiring constant context switching that reduces efficiency and increases error potential. Additionally, most available annotation tools lack integration with AI assistance, forcing medical experts to perform entirely manual annotation even for routine structures that could be automatically detected.
-
-Vietnamese healthcare infrastructure presents unique constraints that compound these annotation challenges. Many institutions operate with limited IT budgets and varying levels of technical expertise, necessitating solutions that are both cost-effective and easy to deploy. Furthermore, the need to accommodate Vietnamese medical terminology and local clinical practices requires customizable systems that can adapt to institutional workflows rather than imposing rigid, standardized processes.
-
-The absence of intelligent annotation systems specifically designed for Vietnamese healthcare contexts represents a critical gap that limits the potential for AI adoption in medical imaging. Without efficient annotation capabilities, Vietnamese healthcare institutions cannot build the comprehensive labeled datasets required for developing AI diagnostic tools tailored to local patient populations and clinical scenarios.
-
-\section{Research Motivation}
-
-\subsection{Limitations of Current Manual Annotation Processes}
-
-The traditional approach to medical data annotation involves highly trained medical professionals manually reviewing and labeling medical images. This process, while ensuring high accuracy, suffers from several critical limitations:
-
-\textbf{Time Consumption and Resource Intensity:} Manual annotation of medical images is an extremely time-consuming process. A single CT scan containing hundreds of slices may require several hours of expert annotation time, making it impractical to scale for large datasets required by modern AI systems.
-
-\textbf{Inter-annotator Variability:} Different medical experts may interpret and label the same anatomical structures or pathological findings differently, leading to inconsistencies in the resulting datasets. This variability can negatively impact the performance and reliability of AI models trained on such data.
-
-\textbf{Cost and Availability of Expertise:} Medical imaging annotation requires specialized knowledge that is expensive and often scarce. The limited availability of qualified medical professionals creates bottlenecks in data preparation pipelines.
-
-\textbf{Fatigue and Human Error:} Extended annotation sessions can lead to fatigue-induced errors, particularly when dealing with complex 3D medical images that require sustained attention and precision.
-
-\subsection{Need for Intelligent Support Systems}
-
-The limitations of manual annotation processes have created an urgent need for intelligent support systems that can:
-
-\textbf{Accelerate Annotation Workflows:} By providing AI-assisted suggestions and automated preliminary annotations, intelligent systems can significantly reduce the time required for expert review and validation.
-
-\textbf{Enhance Consistency:} Standardized AI assistance can help reduce inter-annotator variability by providing consistent baseline annotations that experts can refine and validate.
-
-\textbf{Scale Annotation Capacity:} Intelligent systems can enable smaller teams of medical experts to handle larger volumes of data by automating routine aspects of the annotation process.
-
-\textbf{Reduce Cognitive Load:} By handling repetitive or straightforward annotation tasks, AI assistance can allow medical experts to focus on complex cases requiring specialized knowledge and judgment.
-
-\subsection{Vietnamese Healthcare Context and Practical Requirements}
-
-The Vietnamese healthcare system presents unique requirements and constraints that must be addressed in developing annotation support systems:
-
-\textbf{Resource Optimization:} Healthcare institutions in Vietnam often operate with limited budgets and technical resources, necessitating cost-effective solutions that maximize value and efficiency.
-
-\textbf{Integration with Existing Systems:} Any annotation system must be compatible with existing medical imaging infrastructure and workflows commonly found in Vietnamese hospitals and clinics.
-
-\textbf{Local Adaptation:} The system must accommodate Vietnamese medical terminology, local clinical practices, and regulatory requirements specific to the Vietnamese healthcare environment.
-
-\textbf{Training and Adoption:} Solutions must be designed with user-friendly interfaces that facilitate adoption by medical professionals with varying levels of technical expertise.
+These limitations highlight the pressing need for the development of an intelligent annotation system that provides a well-defined and streamlined workflow, enables clear task delegation, facilitates effective collaboration among clinical professionals, and integrates advanced AI tools to reduce annotation time while enhancing the quality of annotated medical data.
 
 \section{Objectives and Contributions}
 
@@ -60,7 +18,7 @@ This thesis aims to develop a comprehensive intelligent annotation system for me
 Create a unified platform that combines state-of-the-art medical image viewing capabilities with AI-assisted annotation tools, providing an intuitive interface for medical professionals to efficiently annotate complex medical imaging data.
 
 \textbf{Objective 2: Implement AI-Assisted Segmentation}
-Integrate advanced AI models, including foundation models like VISTA3D and interactive segmentation tools, to provide intelligent assistance in identifying and segmenting anatomical structures and pathological findings.
+Integrate advanced AI models, including foundation models like SAM and interactive segmentation tools, to provide intelligent assistance in identifying and segmenting anatomical structures and pathological findings.
 
 \textbf{Objective 3: Design Flexible Workflow Management}
 Implement a robust workflow management system that supports various annotation workflows, task assignment, quality control processes, and collaborative annotation scenarios.
@@ -74,26 +32,26 @@ This research makes the following specific contributions to the field of medical
 
 \textbf{Technical Contributions:}
 \begin{itemize}
-    \item Integration of multiple open-source medical imaging tools (OHIF Viewer, MONAI Label, Orthanc) into a cohesive annotation platform
-    \item Implementation of a flexible workflow engine supporting complex annotation pipelines with AI assistance
-    \item Development of real-time collaborative annotation features enabling multiple experts to work simultaneously
-    \item Creation of an adaptive AI assistance system that learns from user interactions and improves over time
+    \item Development of an integrated annotation platform that combines state-of-the-art medical image viewing with AI-assisted annotation tools
+    \item Implementation of a structured workflow management system with clear task assignment mechanisms and progress monitoring capabilities
+    \item Creation of real-time collaborative annotation features facilitating effective communication and professional feedback between clinical staff
+    \item Integration of advanced AI tools including foundation models to reduce manual annotation workload while maintaining quality
 \end{itemize}
 
 \textbf{Practical Contributions:}
 \begin{itemize}
-    \item Demonstration of significant time reduction in medical image annotation workflows
-    \item Provision of a user-friendly interface designed specifically for medical professionals
-    \item Implementation of quality control mechanisms ensuring annotation accuracy and consistency
-    \item Development of a deployment-ready system suitable for Vietnamese healthcare institutions
+    \item Design and deployment of a streamlined workflow system that addresses fragmented coordination among annotation team members
+    \item Development of efficient task delegation mechanisms optimizing human resource utilization
+    \item Implementation of professional communication tools supporting complex clinical case discussions
+    \item Creation of a deployment-ready system addressing practical challenges in Vietnamese healthcare contexts
 \end{itemize}
 
 \textbf{Research Contributions:}
 \begin{itemize}
-    \item Comprehensive analysis of current medical annotation challenges and requirements
-    \item Evaluation of AI-assisted annotation effectiveness in real-world medical imaging scenarios
-    \item Guidelines for integrating AI assistance into existing medical workflows
-    \item Framework for future extension to additional medical imaging modalities and clinical applications
+    \item Analysis of workflow management challenges in medical annotation processes
+    \item Evaluation of intelligent annotation system effectiveness in improving coordination and reducing manual workload
+    \item Guidelines for integrating AI-assisted tools into existing hospital annotation workflows
+    \item Framework for structured collaboration between radiologists and annotation staff in clinical environments
 \end{itemize}
 
 \subsection{Scope and Limitations}
@@ -103,10 +61,10 @@ This research focuses on developing an annotation system primarily for CT and MR
 
 \textbf{Research Limitations:}
 \begin{itemize}
-    \item The system is primarily validated on specific medical imaging datasets and may require adaptation for other imaging modalities
-    \item AI model performance is dependent on the quality and diversity of training data available
-    \item The study does not include comprehensive clinical validation across multiple healthcare institutions
-    \item Integration testing is limited to common PACS systems and may require customization for specialized medical imaging infrastructure
+    \item The system is currently validated and tested specifically at Thong Nhat Hospital, with plans for future expansion to additional healthcare institutions
+    \item AI model performance is dependent on the quality and diversity of training data available from the current testing environment
+    \item Clinical validation is limited to the workflows and practices observed at the primary testing site
+    \item Integration testing focuses on the existing infrastructure at Thong Nhat Hospital and may require adaptation for different institutional setups
 \end{itemize}
 
 \section{Thesis Organization}
