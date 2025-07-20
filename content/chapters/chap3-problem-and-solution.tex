@@ -2,7 +2,7 @@
 
 \section{Detailed Problem Analysis}
 
-\subsection{Current Medical Annotation Workflow Analysis}
+\subsection{Traditional Medical Annotation Workflow Analysis}
 
 The traditional medical annotation workflow presents several critical bottlenecks that significantly impact the efficiency and scalability of medical AI development. Through analysis of current practices in Vietnamese healthcare institutions and international standards, we have identified key problematic areas that require systematic addressing.
 
@@ -56,16 +56,16 @@ Effective medical annotation often requires collaboration and communication betw
 
 Based on the identified problems and stakeholder analysis, we have defined comprehensive functional requirements for an intelligent medical annotation system:
 
-\textbf{FR1: Comprehensive Medical Image Visualization}
+\textbf{Functional Requirement 1: Comprehensive Medical Image Visualization}
 \begin{itemize}
-    \item Support for multiple medical imaging modalities (CT, MRI, X-ray)
+    \item Support for multiple medical imaging modalities (CT, MRI)
     \item DICOM compliance and seamless integration with PACS systems
     \item Multi-planar reconstruction (MPR) and 3D visualization capabilities
     \item Advanced image manipulation tools (windowing, zooming, measurement)
     \item Support for multi-modal image fusion and comparison
 \end{itemize}
 
-\textbf{FR2: AI-Assisted Annotation Capabilities}
+\textbf{Functional Requirement 2: AI-Assisted Annotation Capabilities}
 \begin{itemize}
     \item Integration with state-of-the-art AI segmentation models
     \item Interactive segmentation with point-click guidance
@@ -74,7 +74,7 @@ Based on the identified problems and stakeholder analysis, we have defined compr
     \item Support for both 2D and 3D annotation tasks
 \end{itemize}
 
-\textbf{FR3: Workflow Management and Task Assignment}
+\textbf{Functional Requirement 3: Workflow Management and Task Assignment}
 \begin{itemize}
     \item Flexible workflow definition supporting multiple annotation stages
     \item Automated task assignment based on expert availability and specialization
@@ -83,7 +83,7 @@ Based on the identified problems and stakeholder analysis, we have defined compr
     \item Consensus building mechanisms for complex cases
 \end{itemize}
 
-\textbf{FR4: Collaborative Annotation Features}
+\textbf{Functional Requirement 4: Collaborative Annotation Features}
 \begin{itemize}
     \item Real-time multi-user annotation capabilities
     \item Integrated communication tools with shared visual context
@@ -92,7 +92,7 @@ Based on the identified problems and stakeholder analysis, we have defined compr
     \item Knowledge sharing and best practice documentation
 \end{itemize}
 
-\textbf{FR5: Quality Assurance and Validation}
+\textbf{Functional Requirement 5: Quality Assurance and Validation}
 \begin{itemize}
     \item Automated quality checks and consistency validation
     \item Inter-annotator agreement metrics and reporting
@@ -103,32 +103,31 @@ Based on the identified problems and stakeholder analysis, we have defined compr
 
 \subsection{Non-Functional Requirements}
 
-\textbf{NFR1: Performance and Scalability}
+\textbf{Non-Functional Requirement 1: Performance and Scalability}
 \begin{itemize}
-    \item Support for concurrent users (minimum 50 simultaneous annotators)
-    \item Sub-second response times for image loading and annotation updates
+    \item Support for multiple concurrent users with seamless multi-user annotation capabilities
+    \item Fast response times for image loading and real-time annotation updates
     \item Scalable architecture supporting growing user bases and data volumes
-    \item Efficient handling of large medical imaging datasets (multi-gigabyte studies)
+    \item Efficient handling of large medical imaging datasets
 \end{itemize}
 
-\textbf{NFR2: Security and Privacy}
+\textbf{Non-Functional Requirement 2: Security and Privacy}
 \begin{itemize}
-    \item HIPAA-compliant data handling and storage
-    \item Role-based access control with fine-grained permissions
-    \item Secure data transmission using industry-standard encryption
-    \item Audit logging for all system access and annotation activities
+    \item Appropriate data handling and storage with healthcare compliance
+    \item Role-based access control with user permissions management
+    \item Secure data transmission using standard encryption
+    \item Basic activity logging for system monitoring
     \item De-identification tools for research data preparation
 \end{itemize}
 
-\textbf{NFR3: Reliability and Availability}
+\textbf{Non-Functional Requirement 3: Reliability and Availability}
 \begin{itemize}
-    \item 99.9\% system availability during operational hours
+    \item High system availability and reliable uptime during operational hours
     \item Automatic backup and disaster recovery capabilities
-    \item Graceful degradation during partial system failures
     \item Data integrity protection and corruption detection
 \end{itemize}
 
-\textbf{NFR4: Usability and Accessibility}
+\textbf{Non-Functional Requirement 4: Usability and Accessibility}
 \begin{itemize}
     \item Intuitive user interface designed for medical professionals
     \item Accessibility compliance for users with disabilities
@@ -137,51 +136,43 @@ Based on the identified problems and stakeholder analysis, we have defined compr
     \item Comprehensive user documentation and training materials
 \end{itemize}
 
-\textbf{NFR5: Integration and Interoperability}
+\textbf{Non-Functional Requirement 5: Integration and Interoperability}
 \begin{itemize}
     \item DICOM Web (DICOMweb) protocol support
     \item HL7 FHIR compatibility for healthcare system integration
     \item RESTful API for third-party system integration
-    \item Standard annotation format export (DICOM SR, JSON, XML)
+    \item Standard annotation format export (DICOM)
     \item Legacy system compatibility and migration support
 \end{itemize}
 
 \subsection{Stakeholder Analysis and Requirements}
 
-\textbf{Primary Stakeholders - Medical Professionals:}
+\textbf{Primary Stakeholders - Radiologists and Medical Imaging Specialists:}
 
-\textit{Radiologists and Medical Imaging Specialists:}
+As the primary users of the intelligent annotation system, radiologists and medical imaging specialists serve multiple roles including data providers, annotators, and quality validators. Their requirements encompass:
+
+\textit{As Medical Image Data Providers:}
+\begin{itemize}
+    \item Need seamless integration with existing PACS and imaging systems
+    \item Require DICOM compliance for standard medical imaging workflows
+    \item Demand secure data handling and patient privacy protection
+    \item Need efficient data import and export capabilities
+\end{itemize}
+
+\textit{As Expert Annotators:}
 \begin{itemize}
     \item Require high-quality image visualization with familiar interaction patterns
-    \item Need AI assistance that enhances rather than replaces their expertise
-    \item Demand efficient workflows that minimize time spent on routine tasks
-    \item Require robust quality control and validation mechanisms
+    \item Need AI assistance that enhances rather than replaces their clinical expertise
+    \item Demand efficient annotation tools that minimize time spent on routine tasks
+    \item Require collaborative features for complex case consultations
 \end{itemize}
 
-\textit{Medical Technicians and Imaging Staff:}
+\textit{As Quality Validators and Reviewers:}
 \begin{itemize}
-    \item Need simplified interfaces for routine annotation tasks
-    \item Require clear guidance and standardized procedures
-    \item Benefit from AI assistance for preliminary annotations
+    \item Need robust quality control and validation mechanisms
+    \item Require annotation review and approval workflows
+    \item Demand progress tracking and project management capabilities
     \item Need training and support materials for system adoption
-\end{itemize}
-
-\textbf{Secondary Stakeholders - Administrative and Technical:}
-
-\textit{Healthcare IT Administrators:}
-\begin{itemize}
-    \item Require seamless integration with existing hospital systems
-    \item Need comprehensive security and compliance features
-    \item Demand scalable solutions that grow with institutional needs
-    \item Require detailed monitoring and reporting capabilities
-\end{itemize}
-
-\textit{Research and AI Development Teams:}
-\begin{itemize}
-    \item Need access to high-quality annotated datasets
-    \item Require standardized annotation formats and metadata
-    \item Benefit from collaborative annotation and consensus building tools
-    \item Need customizable workflows for research protocols
 \end{itemize}
 
 \section{Proposed Solution Overview}
@@ -192,7 +183,7 @@ Our proposed solution addresses the identified challenges through the developmen
 
 \textbf{Unified Platform Approach:} Rather than requiring users to integrate multiple disparate tools, our solution provides a unified platform that seamlessly combines medical image viewing, AI-assisted annotation, workflow management, and collaborative features. This integration eliminates the friction and complexity associated with multi-tool workflows while providing comprehensive functionality.
 
-\textbf{AI-First Design Philosophy:} Our system is designed with AI assistance as a core component rather than an add-on feature. The AI assistance is deeply integrated into every aspect of the annotation workflow, from initial image loading through final quality validation, providing contextual and adaptive support that learns from user interactions.
+\textbf{Intelligent AI-Assisted Support:} Our system integrates advanced AI tools as intelligent assistants that enhance the expertise of medical professionals rather than replace their clinical judgment. The AI assistance is thoughtfully embedded throughout the annotation workflow to accelerate routine tasks, provide preliminary suggestions, and support complex decision-making, while maintaining the radiologist's authority over final annotation decisions. This approach leverages AI capabilities to reduce manual workload and improve efficiency while preserving the critical role of medical expertise in ensuring annotation accuracy and clinical relevance.
 
 \textbf{Workflow-Centric Architecture:} The system is built around flexible workflow management capabilities that can accommodate various annotation scenarios, from simple single-annotator tasks to complex multi-stage consensus building processes. This flexibility allows institutions to implement annotation workflows that match their specific requirements and constraints.
 
