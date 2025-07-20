@@ -61,8 +61,6 @@ Security is implemented as a cross-cutting concern that protects both data and s
 
 \textbf{Zero Trust Security Model:} The system implements a zero trust security model where every request is authenticated and authorized regardless of its source \cite{rose2020zero}. This approach ensures comprehensive security protection in distributed and cloud deployment scenarios.
 
-\textbf{Role-Based Access Control (RBAC):} The system implements a hierarchical RBAC system that supports multiple roles including System Administrator, Project Manager, Senior Radiologist, Radiologist, Medical Technician, and Research User \cite{sandhu1996role}. Each role has carefully defined permissions that align with clinical workflows and responsibilities.
-
 \textbf{Attribute-Based Access Control (ABAC):} Beyond role-based permissions, the system implements attribute-based access control that considers contextual factors such as data sensitivity, project membership, and temporal constraints when making access decisions \cite{hu2014guide}.
 
 \textbf{Data Encryption and Protection:} All data is encrypted both in transit and at rest using industry-standard encryption algorithms. The system implements key management practices that ensure encryption keys are properly secured and rotated according to healthcare security standards.
