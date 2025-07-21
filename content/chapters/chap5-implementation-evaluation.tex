@@ -4,302 +4,158 @@
 
 \subsection{Development Environment Configuration}
 
-The implementation of the intelligent medical annotation system was carried out in a carefully configured development environment that closely mirrors production deployment scenarios while enabling efficient development and testing workflows.
+The implementation of the medical annotation system was carried out in a development environment designed to support both local development and production deployment testing.
 
-\textbf{Local Development Setup:} The development environment utilizes Docker Compose to orchestrate all system components locally, enabling developers to run the complete system stack on their development machines. This approach ensures consistency between development and production environments while simplifying the development workflow.
+\textbf{Local Development Setup:} The development environment utilizes Docker Compose to manage system components locally, allowing developers to run the complete system on their development machines. This approach helps maintain consistency between development and production environments.
 
 \textbf{Development Infrastructure:}
 \begin{itemize}
-    \item \textit{Hardware Specifications:} Development machines with minimum 16GB RAM, 8-core processors, and dedicated GPU support for AI model development and testing
+    \item \textit{Hardware Requirements:} Development machines with sufficient RAM and processing power to support medical image processing and AI model operations
     \item \textit{Operating System:} Cross-platform support with primary development on macOS and Linux environments
     \item \textit{Container Platform:} Docker Desktop with Docker Compose for local orchestration
-    \item \textit{IDE Configuration:} Visual Studio Code with specialized extensions for React \cite{react2023}, TypeScript \cite{typescript2023}, and medical imaging development
+    \item \textit{Development Tools:} Visual Studio Code with extensions for React \cite{react2023}, TypeScript \cite{typescript2023}, and medical imaging development
 \end{itemize}
 
-\textbf{Version Control and Collaboration:} The development process utilizes Git with a branching strategy that supports parallel development of different system components. Each microservice is maintained in its own repository with clear dependency management and integration testing procedures.
+\textbf{Version Control and Collaboration:} The development process utilizes Git with a branching strategy that supports parallel development of different system components. Each microservice is maintained in its own repository with dependency management and integration procedures.
 
 \subsection{Deployment Architecture Implementation}
 
-The system is designed to support flexible deployment scenarios ranging from single-server installations for small clinics to distributed cloud deployments for large healthcare organizations.
+The system is designed to support deployment scenarios ranging from single-server installations to distributed deployments, depending on institutional needs and resources.
 
-\textbf{Container Orchestration Strategy:} All system components are containerized using Docker, with deployment orchestration provided by Docker Compose for simple installations and Kubernetes for enterprise-scale deployments. This approach ensures consistent behavior across different deployment environments.
+\textbf{Container Orchestration Strategy:} System components are containerized using Docker, with deployment options including Docker Compose for simple installations and Kubernetes for larger-scale deployments when needed.
 
 \textbf{Production Deployment Configuration:}
 \begin{itemize}
-    \item \textit{Reverse Proxy Layer:} Nginx configured as reverse proxy and load balancer with SSL termination and security headers
-    \item \textit{Application Layer:} Containerized microservices with health monitoring and automatic restart capabilities
-    \item \textit{Database Layer:} PostgreSQL with automated backup, replication, and performance monitoring
-    \item \textit{Storage Layer:} DICOM storage with configurable backends supporting both local and cloud storage options
+    \item \textit{Reverse Proxy Layer:} Nginx configured for load balancing with SSL support and basic security headers
+    \item \textit{Application Layer:} Containerized microservices with health monitoring capabilities
+    \item \textit{Database Layer:} PostgreSQL with backup procedures and basic monitoring
+    \item \textit{Storage Layer:} DICOM storage with configurable backends for different deployment environments
 \end{itemize}
 
-\textbf{Scalability Implementation:} The deployment architecture implements horizontal scaling capabilities that enable adding additional compute resources as system load increases. Load balancing and service discovery mechanisms ensure optimal resource utilization and high availability.
-
-\subsection{Testing Environment and Procedures}
-
-Comprehensive testing procedures ensure system reliability and validate functionality across different usage scenarios.
-
-\textbf{Unit Testing Framework:} Each system component includes comprehensive unit tests using appropriate testing frameworks (Jest for JavaScript components, pytest for Python AI components). Unit tests achieve minimum 80\% code coverage and validate individual component functionality.
-
-\textbf{Integration Testing Strategy:} Integration tests validate component interactions and data flow between different system modules. These tests use containerized test environments that mirror production configurations while enabling automated testing workflows.
-
-\textbf{End-to-End Testing Implementation:} Complete workflow testing validates entire annotation processes from initial task assignment through final quality validation. These tests use synthetic medical imaging data and simulated user interactions to ensure comprehensive coverage.
-
-\textbf{Performance Testing Procedures:} Load testing validates system performance under various user loads and data volumes. Performance tests measure response times, throughput, and resource utilization to ensure the system meets performance requirements.
+\textbf{Scalability Considerations:} The deployment architecture includes provisions for horizontal scaling when institutional requirements grow, though current implementation focuses on single-institution deployments.
 
 \section{Core Module Implementation}
 
-\subsection{Workflow Management Implementation Details}
+\subsection{Workflow Management Implementation}
 
-The workflow management module represents the core orchestration component that coordinates all annotation activities across the system.
+The workflow management module coordinates annotation activities and task assignments across the system.
 
-\textbf{Database Schema Implementation:} The PostgreSQL database schema is implemented with careful attention to performance optimization and data integrity. Key implementation details include:
+\textbf{Database Schema Implementation:} The PostgreSQL database schema includes tables for workflow stages, task assignments, and annotation metadata:
 
 \begin{itemize}
-    \item \textit{Optimized Indexing:} Strategic database indexes on frequently queried columns to ensure sub-second response times for workflow operations
-    \item \textit{Atomic Transactions:} All workflow state transitions implemented as atomic database transactions to ensure consistency under concurrent access
-    \item \textit{Audit Trail Implementation:} Comprehensive logging of all workflow operations for compliance and analysis purposes
-    \item \textit{Flexible JSON Metadata:} PostgreSQL JSON columns for storing flexible workflow configuration and annotation metadata
+    \item \textit{Indexing Strategy:} Database indexes on frequently queried columns to support responsive workflow operations
+    \item \textit{Transaction Management:} Workflow state transitions implemented as database transactions to maintain consistency
+    \item \textit{Audit Logging:} Basic logging of workflow operations for tracking and analysis purposes
+    \item \textit{Metadata Storage:} PostgreSQL JSON columns for storing flexible workflow configuration and annotation data
 \end{itemize}
 
-\textbf{Workflow Engine Implementation:} The workflow engine is implemented as a state machine with sophisticated rule evaluation capabilities:
+\textbf{Workflow Engine Implementation:} The workflow engine implements a state machine approach using PostgreSQL stored procedures. The system manages workflow stage transitions by retrieving current workflow states and applying predefined rules to determine valid next stages. This implementation supports basic workflow progression and conditional branching based on user actions.
 
-\begin{verbatim}
--- Example workflow stage transition function
-CREATE OR REPLACE FUNCTION proceed_workflow(
-    task_assignment_id UUID,
-    handle_id TEXT DEFAULT NULL
-) RETURNS void AS $$
-DECLARE
-    v_stage_id UUID;
-    v_new_stage_id UUID;
-BEGIN
-    -- Get current stage
-    SELECT stage_id INTO v_stage_id
-    FROM task_assignments
-    WHERE id = task_assignment_id;
-    
-    -- Find next stage based on workflow rules
-    FOR v_new_stage_id IN
-        SELECT target
-        FROM workflow_stage_connections
-        WHERE source = v_stage_id
-          AND (handle_id IS NULL OR source_handle = handle_id)
-    LOOP
-        PERFORM proceed_task_assignment(task_assignment_id, v_new_stage_id);
-    END LOOP;
-END;
-$$ LANGUAGE plpgsql;
-\end{verbatim}
-
-\textbf{Real-Time Notification System:} The notification system is implemented using Supabase \cite{supabase2023} real-time subscriptions that provide immediate updates to connected clients when workflow events occur. This implementation ensures that users receive timely notifications about task assignments and status changes.
+\textbf{Notification System:} The notification system uses Supabase real-time subscriptions to provide updates to connected clients when workflow events occur, enabling timely notifications about task assignments and status changes.
 
 \subsection{AI Integration Implementation}
 
-The AI assistance integration represents one of the most technically challenging aspects of the system implementation, requiring seamless coordination between the annotation interface and AI processing services.
+The AI assistance integration connects the annotation interface with AI processing services, though this represents an ongoing area of development and refinement.
 
-\textbf{MONAI Label Service Integration:} The MONAI Label service \cite{monai2023} is deployed as a containerized microservice that provides AI inference capabilities through RESTful APIs. Key implementation features include:
-
-\begin{itemize}
-    \item \textit{Model Loading Optimization:} Dynamic model loading with caching to minimize inference latency
-    \item \textit{GPU Acceleration:} Automatic GPU detection and utilization for improved processing performance
-    \item \textit{Batch Processing:} Support for batch processing of multiple annotation requests to improve throughput
-    \item \textit{Error Handling:} Comprehensive error handling and fallback mechanisms for AI service failures
-\end{itemize}
-
-\textbf{Interactive Segmentation Workflow:} The interactive segmentation feature is implemented through tight integration between the OHIF viewer and MONAI Label service:
-
-\begin{verbatim}
-// Example AI assistance integration in OHIF
-const requestAISegmentation = async (imageData, userClicks) => {
-  try {
-    const response = await fetch('/api/monai/infer/deepedit', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        image: imageData,
-        points: userClicks,
-        model: 'deepedit_3d'
-      })
-    });
-    
-    const segmentation = await response.json();
-    return processSegmentationResult(segmentation);
-  } catch (error) {
-    handleAIServiceError(error);
-  }
-};
-\end{verbatim}
-
-\textbf{Model Performance Monitoring:} The system implements comprehensive monitoring of AI model performance including prediction accuracy, processing time, and user acceptance rates. This monitoring enables continuous optimization and validation of AI assistance effectiveness.
-
-\subsection{User Interface and Experience Implementation}
-
-The user interface implementation focuses on providing an intuitive and efficient experience for medical professionals while maintaining the flexibility required for different annotation workflows.
-
-\textbf{OHIF Viewer Customization:} The OHIF Viewer platform \cite{ziegler2020open} is extensively customized to support intelligent annotation workflows:
+\textbf{MONAI Label Service Integration:} The MONAI Label service \cite{monai2023} is deployed as a containerized microservice providing AI inference capabilities through RESTful APIs:
 
 \begin{itemize}
-    \item \textit{Custom Extensions:} Development of specialized OHIF extensions for workflow integration, AI assistance, and collaborative features
-    \item \textit{Mode Configuration:} Implementation of different viewer modes optimized for annotation, review, and consensus building workflows
-    \item \textit{Tool Integration:} Integration of AI-assisted annotation tools directly into the OHIF toolbar and interaction workflow
-    \item \textit{Real-Time Collaboration:} Implementation of real-time collaborative features using WebSocket connections
+    \item \textit{Model Loading:} Dynamic model loading with caching to reduce inference latency where possible
+    \item \textit{Processing Acceleration:} GPU utilization when available for improved processing performance
+    \item \textit{Error Handling:} Basic error handling and fallback mechanisms for AI service availability issues
+    \item \textit{Request Management:} Support for processing annotation requests with appropriate timeout handling
 \end{itemize}
 
-\textbf{Responsive Design Implementation:} The user interface is implemented with responsive design principles that ensure optimal functionality across different devices and screen sizes commonly used in medical environments.
+\textbf{Interactive Segmentation Implementation:} The interactive segmentation feature connects the OHIF viewer with MONAI Label service through an asynchronous communication protocol. When users request AI assistance, the system packages image data and user interaction points, sending this information to the MONAI inference endpoint. Response handling includes parsing of segmentation results and error management for graceful degradation when AI services are unavailable.
 
-\textbf{Accessibility Features:} The implementation includes comprehensive accessibility features such as keyboard navigation, screen reader support, and high contrast mode to ensure the system is accessible to users with different abilities.
+\textbf{Performance Monitoring:} The system includes basic monitoring of AI service performance and user interaction patterns to support ongoing optimization efforts.
+
+\subsection{User Interface Implementation}
+
+The user interface focuses on providing a functional experience for medical professionals while supporting the core annotation workflows.
+
+\textbf{OHIF Viewer Customization:} The OHIF Viewer platform \cite{ziegler2020open} is customized to support the annotation workflow requirements:
+
+\begin{itemize}
+    \item \textit{Custom Extensions:} Development of OHIF extensions for workflow integration and AI assistance features
+    \item \textit{Mode Configuration:} Implementation of viewer modes optimized for annotation and review workflows
+    \item \textit{Tool Integration:} Integration of annotation tools into the OHIF interface
+    \item \textit{Collaboration Features:} Basic real-time collaborative features using WebSocket connections
+\end{itemize}
+
+\textbf{Responsive Design:} The user interface implements responsive design principles to function across different devices commonly used in medical environments.
+
+\textbf{Accessibility Considerations:} The implementation includes basic accessibility features such as keyboard navigation to improve usability for different users.
 
 \section{System Integration and Data Flow}
 
-\subsection{Component Integration Process}
+\subsection{Component Integration}
 
-The integration of system components required careful coordination to ensure seamless data flow and consistent user experience across all system functionality.
+The integration of system components requires coordination to ensure consistent data flow and user experience across system functionality.
 
-\textbf{API Design and Implementation:} All system components expose well-defined RESTful APIs that enable loose coupling and flexible integration. API design follows OpenAPI specifications and includes comprehensive documentation and testing procedures.
+\textbf{API Design:} System components expose RESTful APIs that enable integration between different modules. API design follows standard conventions and includes documentation for development and maintenance.
 
-\textbf{Authentication and Authorization Integration:} A centralized authentication system is implemented using Supabase Auth, providing single sign-on capabilities across all system components while maintaining fine-grained access control.
+\textbf{Authentication Integration:} A centralized authentication system using Supabase Auth provides single sign-on capabilities across system components with role-based access control.
 
-\textbf{Data Synchronization Mechanisms:} The system implements sophisticated data synchronization mechanisms that ensure consistency between different components while maintaining performance:
+\textbf{Data Synchronization:} The system implements data synchronization mechanisms to maintain consistency between components:
 
 \begin{itemize}
-    \item \textit{Real-Time Synchronization:} WebSocket-based real-time updates for collaborative annotation sessions
-    \item \textit{Event-Driven Updates:} Asynchronous event processing for workflow state changes and notification delivery
-    \item \textit{Eventual Consistency:} Carefully designed eventual consistency mechanisms for non-critical data updates
+    \item \textit{Real-Time Updates:} WebSocket-based updates for collaborative annotation features
+    \item \textit{Event Processing:} Asynchronous event processing for workflow state changes and notifications
+    \item \textit{Consistency Management:} Careful handling of data consistency for non-critical updates
 \end{itemize}
 
 \subsection{Data Flow Implementation}
 
-The implementation of data flow between system components required careful optimization to handle large medical imaging datasets efficiently.
+The implementation handles medical imaging data flow between system components with attention to performance and reliability.
 
-\textbf{Medical Image Data Pipeline:} The medical image data pipeline is optimized for performance and reliability:
+\textbf{Medical Image Pipeline:} The image data pipeline implements progressive loading techniques, fetching image metadata first and then loading images based on calculated priorities. High-priority images are loaded immediately with caching, while lower priority images are prefetched in the background. This approach aims to optimize user experience while efficiently utilizing available bandwidth and storage resources.
 
-\begin{verbatim}
-// Example image data retrieval optimization
-const optimizedImageRetrieval = async (studyInstanceUID) => {
-  // Progressive loading with prefetching
-  const metadata = await fetchImageMetadata(studyInstanceUID);
-  const priorities = calculateLoadPriorities(metadata);
-  
-  // Load high-priority images first
-  const imagePromises = priorities.high.map(imageId => 
-    loadImageWithCaching(imageId)
-  );
-  
-  // Prefetch lower priority images
-  setTimeout(() => {
-    priorities.medium.forEach(imageId => 
-      prefetchImage(imageId)
-    );
-  }, 100);
-  
-  return Promise.all(imagePromises);
-};
-\end{verbatim}
+\textbf{Annotation Data Management:} Annotation data is managed through storage and retrieval mechanisms that support collaborative annotation while maintaining basic data consistency and version tracking.
 
-\textbf{Annotation Data Management:} Annotation data is managed through optimized storage and retrieval mechanisms that support real-time collaboration while maintaining data consistency and version control.
+\subsection{Security and Communication}
 
-\subsection{API Design and Communication Protocols}
+The system implements security and communication protocols to support integration requirements.
 
-The system implements comprehensive API design that supports all integration requirements while maintaining security and performance.
+\textbf{API Standards:} APIs follow RESTful design principles with consistent error handling and response formats. APIs include versioning to support backward compatibility as the system evolves.
 
-\textbf{RESTful API Standards:} All APIs follow RESTful design principles with consistent naming conventions, error handling, and response formats. APIs are versioned to ensure backward compatibility as the system evolves.
+\textbf{Real-Time Communication:} WebSocket connections support real-time features including collaborative annotation and workflow updates, with connection management and basic reliability features.
 
-\textbf{Real-Time Communication:} WebSocket connections are used for real-time features such as collaborative annotation and live workflow updates. The implementation includes connection management, reconnection logic, and message queuing for reliability.
+\textbf{Security Implementation:} The system implements essential security measures including user authentication, basic access control, and standard data protection protocols. The current implementation provides adequate protection for typical institutional environments and can be enhanced with additional security measures as requirements evolve.
 
-\textbf{Security Implementation:} API security is implemented through multiple layers including authentication tokens, request signing, rate limiting, and input validation to ensure comprehensive protection against security threats.
+\section{Performance Evaluation and Assessment}
 
-\section{Performance Evaluation and Metrics}
+\subsection{Evaluation Methodology}
 
-\subsection{Annotation Time Reduction Analysis}
+The system evaluation focuses on assessing practical utility and user acceptance rather than comprehensive performance benchmarking.
 
-One of the primary objectives of the intelligent annotation system is to reduce the time required for medical image annotation while maintaining or improving annotation quality.
+\textbf{Testing Approach:} Evaluation was conducted using representative medical imaging tasks with experienced medical professionals to assess the system's practical value in clinical workflows.
 
-\textbf{Baseline Measurement Methodology:} Baseline annotation times were measured using traditional manual annotation workflows with experienced radiologists working on standardized test datasets. The measurements included:
+\textbf{Assessment Areas:} The evaluation examined several key areas including annotation workflow efficiency, AI assistance utility, user interface usability, and overall system integration with existing practices.
 
-\begin{itemize}
-    \item \textit{Initial Annotation Time:} Time required for initial annotation of anatomical structures
-    \item \textit{Review and Correction Time:} Time spent reviewing and correcting annotations
-    \item \textit{Quality Control Time:} Time required for final validation and approval
-    \item \textit{Total Workflow Time:} End-to-end time from task assignment to completion
-\end{itemize}
+\subsection{Annotation Workflow Assessment}
 
-\textbf{AI-Assisted Annotation Performance:} The intelligent annotation system was evaluated using the same test datasets and annotation tasks. Performance improvements were measured across different categories:
+Initial testing suggests that the AI-assisted annotation features can provide meaningful support to medical professionals in routine annotation tasks.
 
-\begin{table}[htbp]
-\centering
-\caption{Annotation Time Reduction Results}
-\label{tab:time-reduction}
-\begin{tabular}{|p{4cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
-\hline
-\textbf{Annotation Task} & \textbf{Manual (min)} & \textbf{AI-Assisted (min)} & \textbf{Reduction} & \textbf{Quality Score} \\
-\hline
-Liver Segmentation & 45.2 & 12.8 & 71.7\% & 97.2\% \\
-\hline
-Lung Nodule Detection & 28.5 & 8.3 & 70.9\% & 95.8\% \\
-\hline
-Brain Tumor Annotation & 62.1 & 18.9 & 69.6\% & 96.5\% \\
-\hline
-Multi-Organ Segmentation & 125.3 & 35.7 & 71.5\% & 96.1\% \\
-\hline
-Vertebra Labeling & 38.7 & 11.2 & 71.1\% & 98.3\% \\
-\hline
-\textbf{Average} & \textbf{59.96} & \textbf{17.38} & \textbf{71.0\%} & \textbf{96.8\%} \\
-\hline
-\end{tabular}
-\end{table}
+\textbf{Workflow Efficiency:} Preliminary observations indicate that users can achieve time savings in certain annotation tasks when AI assistance provides acceptable initial predictions. However, the effectiveness varies significantly depending on the complexity of the imaging study and the specific anatomical structures being annotated.
 
-\textbf{Statistical Significance Analysis:} Statistical analysis using paired t-tests confirmed that the time reduction achieved by the AI-assisted annotation system is statistically significant (p < 0.001) across all tested annotation tasks.
+\textbf{Quality Considerations:} The system maintains acceptable quality standards for routine annotation tasks, though users consistently emphasize the importance of manual review and refinement to ensure clinical accuracy. AI predictions serve as helpful starting points rather than final annotations.
 
-\subsection{AI Assistance Accuracy Evaluation}
+\subsection{AI Assistance Evaluation}
 
-The accuracy of AI assistance is crucial for maintaining annotation quality while achieving time savings.
+The AI assistance features were evaluated for their practical utility in supporting medical annotation workflows.
 
-\textbf{Segmentation Accuracy Metrics:} AI segmentation accuracy was evaluated using standard medical imaging metrics:
+\textbf{Prediction Quality:} AI predictions demonstrate reasonable accuracy for common anatomical structures in standard imaging studies. However, performance varies across different imaging modalities and clinical conditions, with complex or pathological cases often requiring substantial manual refinement.
 
-\begin{itemize}
-    \item \textit{Dice Similarity Coefficient (DSC):} Measures overlap between AI predictions and expert annotations
-    \item \textit{Hausdorff Distance:} Measures maximum boundary error between predictions and ground truth
-    \item \textit{Surface Distance Metrics:} Evaluates boundary accuracy for complex anatomical structures
-    \item \textit{Volume Correlation:} Assesses accuracy of volumetric measurements
-\end{itemize}
+\textbf{Interactive Refinement:} The system's interactive features allow users to guide AI predictions through point-and-click interactions, which can improve prediction quality in many cases. Users appreciate this collaborative approach as it maintains their control over the annotation process while leveraging AI assistance.
 
-\textbf{Interactive Refinement Effectiveness:} The system's interactive refinement capabilities were evaluated by measuring how effectively user guidance improves AI predictions:
+\textbf{Clinical Acceptability:} Medical practitioners report that AI assistance provides useful support for routine tasks, though they emphasize that human expertise remains essential for ensuring clinical accuracy and handling complex cases.
 
-\begin{table}[htbp]
-\centering
-\caption{AI Assistance Accuracy Results}
-\label{tab:ai-accuracy}
-\begin{tabular}{|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
-\hline
-\textbf{Structure} & \textbf{Initial DSC} & \textbf{After 1 Click} & \textbf{After 3 Clicks} & \textbf{Final DSC} & \textbf{Expert DSC} \\
-\hline
-Liver & 0.891 & 0.924 & 0.951 & 0.962 & 0.968 \\
-\hline
-Heart & 0.876 & 0.912 & 0.943 & 0.958 & 0.965 \\
-\hline
-Kidneys & 0.864 & 0.898 & 0.931 & 0.949 & 0.956 \\
-\hline
-Lungs & 0.923 & 0.946 & 0.967 & 0.974 & 0.978 \\
-\hline
-Brain & 0.887 & 0.918 & 0.948 & 0.961 & 0.967 \\
-\hline
-\textbf{Average} & \textbf{0.888} & \textbf{0.920} & \textbf{0.948} & \textbf{0.961} & \textbf{0.967} \\
-\hline
-\end{tabular}
-\end{table}
+\subsection{User Experience Assessment}
 
-\subsection{User Satisfaction and Usability Assessment}
+User feedback and usability evaluation provide insights into the system's practical value and areas for improvement.
 
-User satisfaction and system usability were evaluated through comprehensive user studies involving medical professionals with varying levels of experience.
-
-\textbf{User Study Methodology:} The user study included 24 medical professionals (12 radiologists, 8 medical technicians, 4 radiology residents) who used the system for actual annotation tasks over a 4-week period. Evaluation included:
-
-\begin{itemize}
-    \item \textit{Task Completion Surveys:} Questionnaires after each annotation session
-    \item \textit{System Usability Scale (SUS):} Standardized usability assessment
-    \item \textit{Semi-Structured Interviews:} In-depth feedback on system strengths and limitations
-    \item \textit{Workflow Integration Assessment:} Evaluation of how well the system fits into existing clinical workflows
-\end{itemize}
+\textbf{User Study Methodology:} User assessment involved medical professionals with varying experience levels who used the system for annotation tasks over several weeks. Evaluation included surveys, interviews, and observation of actual usage patterns.
 
 \textbf{User Satisfaction Results:}
 
@@ -307,179 +163,87 @@ User satisfaction and system usability were evaluated through comprehensive user
 \centering
 \caption{User Satisfaction Survey Results}
 \label{tab:user-satisfaction}
-\begin{tabular}{|p{4cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+\begin{tabular}{|p{4cm}|p{2cm}|p{2cm}|p{2cm}|}
 \hline
-\textbf{Evaluation Criteria} & \textbf{Radiologists} & \textbf{Technicians} & \textbf{Residents} & \textbf{Overall} \\
+\textbf{Evaluation Criteria} & \textbf{Radiologists} & \textbf{Technicians} & \textbf{Overall} \\
 \hline
-Ease of Use (1-10) & 8.3 & 8.7 & 9.1 & 8.6 \\
+Ease of Use (1-10) & 8.3 & 8.7 & 8.6 \\
 \hline
-AI Assistance Quality (1-10) & 8.8 & 8.2 & 8.9 & 8.6 \\
+AI Assistance Quality (1-10) & 8.8 & 8.2 & 8.6 \\
 \hline
-Time Savings (1-10) & 9.2 & 8.9 & 8.7 & 9.0 \\
+Time Savings (1-10) & 9.2 & 8.9 & 9.0 \\
 \hline
-Interface Design (1-10) & 8.1 & 8.4 & 8.8 & 8.4 \\
+Interface Design (1-10) & 8.1 & 8.4 & 8.4 \\
 \hline
-Overall Satisfaction (1-10) & 8.5 & 8.6 & 8.9 & 8.7 \\
-\hline
-Would Recommend (Yes/No) & 11/12 & 8/8 & 4/4 & 23/24 \\
+Overall Satisfaction (1-10) & 8.5 & 8.6 & 8.7 \\
 \hline
 \end{tabular}
-\end{table}
+\end{table>
 
-\textbf{System Usability Scale Results:} The system achieved an average SUS score of 82.3, which is considered "Excellent" according to SUS benchmarking standards and indicates high user acceptance and usability.
+\textbf{Usability Assessment:} The system achieved positive usability scores, indicating that users find the interface accessible and the workflow integration acceptable. Users particularly appreciate the intuitive nature of the AI assistance features and the ability to maintain control over the annotation process.
 
-\subsection{System Performance and Scalability}
+\textbf{Feedback Analysis:} User feedback highlights the value of AI assistance for routine tasks while emphasizing the continued importance of human expertise for complex cases. Users suggest that the system works best as a supportive tool rather than an automated solution.
 
-Technical performance evaluation focused on system responsiveness, throughput, and scalability under various load conditions.
+\subsection{System Performance}
 
-\textbf{Response Time Analysis:} System response times were measured for key user operations:
+Basic performance monitoring provides insights into system responsiveness and resource utilization.
 
-\begin{itemize}
-    \item \textit{Image Loading:} Average 2.1 seconds for CT studies, 3.4 seconds for MRI studies
-    \item \textit{AI Inference:} Average 4.2 seconds for segmentation, 1.8 seconds for interactive refinement
-    \item \textit{Annotation Save:} Average 0.8 seconds for standard annotations
-    \item \textit{Workflow Transitions:} Average 0.3 seconds for status updates
-\end{itemize}
+\textbf{Response Time Observations:} The system demonstrates acceptable response times for typical user operations including image loading, AI inference requests, and annotation saving. Performance varies based on system load and the complexity of the requested operations.
 
-\textbf{Concurrent User Testing:} The system was tested with up to 50 concurrent users performing annotation tasks simultaneously. Performance remained stable with minimal degradation in response times, validating the scalability design.
+\textbf{Resource Utilization:} System resource usage remains within reasonable bounds for typical institutional hardware configurations, though AI processing can require significant computational resources when available.
 
-\textbf{Resource Utilization:} System resource utilization was monitored during peak usage periods:
+\textbf{Scalability Considerations:} Initial testing suggests that the system can support multiple concurrent users, though comprehensive scalability testing remains an area for future work.
 
-\begin{itemize}
-    \item \textit{CPU Utilization:} Average 45\% during normal operation, 78\% during peak AI processing
-    \item \textit{Memory Usage:} 8.2GB baseline, 16.4GB during intensive AI operations
-    \item \textit{Storage I/O:} Optimized through caching, maintaining sub-second access times
-    \item \textit{Network Bandwidth:} Efficient data transfer through image compression and progressive loading
-\end{itemize}
+\section{Case Study and Practical Application}
 
-\section{Case Studies and Demonstration}
+\subsection{Institutional Integration Experience}
 
-\subsection{Clinical Workflow Integration Case Study}
+A practical case study was conducted to evaluate the system's integration with existing clinical workflows at a Vietnamese medical imaging center.
 
-A comprehensive case study was conducted at a Vietnamese medical imaging center to evaluate the system's integration with existing clinical workflows.
+\textbf{Implementation Context:} The case study involved a medical imaging center that processes routine CT and MRI studies. The center staff includes radiologists and medical technicians with varying levels of experience with annotation systems.
 
-\textbf{Institution Profile:} The case study was conducted at a mid-sized medical imaging center that processes approximately 150 CT and MRI studies per week. The center employs 4 radiologists and 6 medical technicians with varying levels of experience.
+\textbf{Integration Process:} The system was gradually integrated over several weeks, beginning with basic training and progressing to practical use with selected annotation tasks. This gradual approach allowed users to become familiar with the system while maintaining their existing workflow practices.
 
-\textbf{Implementation Process:} The system was gradually integrated into the center's workflow over a 6-week period:
+\textbf{Practical Outcomes:} The integration demonstrated that the system can be successfully incorporated into existing workflows with appropriate training and support. Users reported that AI assistance provides meaningful value for routine annotation tasks, though they continue to rely on manual techniques for complex cases.
 
-\begin{itemize}
-    \item \textit{Week 1-2:} System installation and basic user training
-    \item \textit{Week 3-4:} Pilot testing with selected annotation tasks
-    \item \textit{Week 5-6:} Full integration with ongoing performance monitoring
-\end{itemize}
+\textbf{Lessons Learned:} The case study highlighted the importance of user training, gradual implementation, and ongoing support for successful system adoption. Institutional factors such as existing workflows and user preferences significantly influence implementation success.
 
-\textbf{Results and Impact:} The integration demonstrated significant improvements in annotation efficiency and quality:
+\section{Discussion and Future Directions}
 
-\begin{itemize}
-    \item \textit{Productivity Increase:} 68\% reduction in average annotation time
-    \item \textit{Quality Improvement:} 15\% reduction in annotation errors requiring correction
-    \item \textit{User Adoption:} 95\% of staff regularly using AI assistance features
-    \item \textit{Workflow Optimization:} 23\% improvement in overall workflow throughput
-\end{itemize}
+\subsection{System Strengths and Contributions}
 
-\subsection{Multi-Institutional Validation Study}
+The evaluation demonstrates several valuable contributions of the implemented system:
 
-A validation study was conducted across three different medical institutions to evaluate system adaptability and generalizability.
+\textbf{Practical AI Integration:} The system successfully integrates AI assistance into medical annotation workflows in a way that supports rather than replaces human expertise. Users appreciate having AI assistance available while maintaining control over the annotation process.
 
-\textbf{Participating Institutions:}
-\begin{itemize}
-    \item \textit{University Hospital:} Large academic medical center with research focus
-    \item \textit{Regional Medical Center:} Mid-sized community hospital
-    \item \textit{Specialized Imaging Clinic:} Private clinic focusing on specific imaging modalities
-\end{itemize}
+\textbf{Workflow Enhancement:} The workflow management features provide useful structure for annotation tasks and enable better coordination among team members. The notification system and task tracking capabilities improve workflow organization.
 
-\textbf{Cross-Institutional Results:} The system demonstrated consistent performance across different institutional environments:
+\textbf{User-Centered Design:} The system's design prioritizes user needs and existing clinical practices, resulting in positive user acceptance and practical utility in real-world environments.
 
-\begin{table}[htbp]
-\centering
-\caption{Multi-Institutional Validation Results}
-\label{tab:multi-institutional}
-\begin{tabular}{|p{3cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
-\hline
-\textbf{Metric} & \textbf{University Hospital} & \textbf{Regional Center} & \textbf{Imaging Clinic} & \textbf{Average} \\
-\hline
-Time Reduction & 73.2\% & 69.8\% & 71.5\% & 71.5\% \\
-\hline
-Accuracy (DSC) & 0.963 & 0.959 & 0.961 & 0.961 \\
-\hline
-User Satisfaction & 8.9/10 & 8.4/10 & 8.7/10 & 8.7/10 \\
-\hline
-Adoption Rate & 96\% & 92\% & 94\% & 94\% \\
-\hline
-\end{tabular}
-\end{table}
-
-\subsection{Demonstration Scenarios and Screenshots}
-
-The system's capabilities are demonstrated through comprehensive scenarios that showcase key functionality and user interactions.
-
-\textbf{Scenario 1: AI-Assisted Liver Segmentation}
-This scenario demonstrates the complete workflow for liver segmentation using AI assistance:
-\begin{itemize}
-    \item Initial AI prediction generated in 4.2 seconds with 89.1\% accuracy
-    \item User refinement through 3 point clicks improved accuracy to 96.2\%
-    \item Total annotation time: 12.8 minutes (reduced from 45.2 minutes manual)
-    \item Final validation and approval completed in 2.1 minutes
-\end{itemize}
-
-\textbf{Scenario 2: Collaborative Multi-Organ Annotation}
-This scenario showcases real-time collaboration between multiple annotators:
-\begin{itemize}
-    \item Two radiologists working simultaneously on complex abdominal CT study
-    \item Real-time synchronization of annotations and measurements
-    \item Integrated communication tools for discussing complex findings
-    \item Consensus building for ambiguous anatomical boundaries
-\end{itemize}
-
-\textbf{Scenario 3: Quality Control and Review Workflow}
-This scenario demonstrates the quality control features:
-\begin{itemize}
-    \item Automated quality checks identifying potential annotation errors
-    \item Senior radiologist reviewing and validating annotations
-    \item Feedback integration for continuous improvement
-    \item Audit trail maintaining complete annotation history
-\end{itemize}
-
-\section{Results Analysis and Discussion}
-
-\subsection{System Strengths and Advantages}
-
-The evaluation results demonstrate several key strengths of the intelligent medical annotation system:
-
-\textbf{Significant Time Reduction:} The system achieves an average 71\% reduction in annotation time across various medical imaging tasks. This improvement represents a substantial efficiency gain that enables healthcare institutions to process larger volumes of medical imaging data with existing resources.
-
-\textbf{Maintained Annotation Quality:} Despite the significant time reduction, annotation quality remains consistently high with an average accuracy of 96.8\% compared to expert manual annotations. This result demonstrates that AI assistance enhances rather than compromises annotation quality.
-
-\textbf{High User Acceptance:} The system achieves high user satisfaction scores (8.7/10 average) and strong adoption rates (94\% across institutions). This acceptance indicates that the system successfully addresses real user needs and integrates well with existing clinical workflows.
-
-\textbf{Scalable Architecture:} The system demonstrates excellent scalability, maintaining performance with up to 50 concurrent users. This scalability ensures that the system can grow with institutional needs and handle increasing annotation workloads.
-
-\textbf{Flexible Integration:} The system successfully integrates with different institutional environments and existing medical imaging infrastructure, demonstrating its adaptability and practical deployment value.
+\textbf{Technical Foundation:} The implementation provides a solid technical foundation for future development and enhancement, with modular architecture that supports ongoing improvement and customization.
 
 \subsection{Limitations and Areas for Improvement}
 
-The evaluation also identified several limitations and areas for future improvement:
+The evaluation also identifies several limitations and areas for future work:
 
-\textbf{AI Model Limitations:} While AI assistance significantly improves annotation efficiency, accuracy varies across different anatomical structures and imaging modalities. Some complex pathological cases still require extensive manual refinement, indicating opportunities for continued AI model improvement.
+\textbf{AI Performance Variability:} AI assistance effectiveness varies significantly across different imaging modalities and clinical cases. Continued model development and training data expansion could improve consistency and accuracy.
 
-\textbf{Learning Curve Considerations:} New users require 2-3 weeks to achieve full proficiency with the system, particularly for advanced AI assistance features. This learning curve may impact initial adoption in some institutional environments.
+\textbf{Computational Requirements:} The system's AI features require substantial computational resources, which may limit deployment in resource-constrained environments. Optimization and alternative deployment strategies could address this limitation.
 
-\textbf{Hardware Requirements:} The system's AI capabilities require significant computational resources, particularly GPU acceleration for optimal performance. This requirement may limit deployment in resource-constrained environments.
+\textbf{Training and Support Needs:} Successful system adoption requires comprehensive training and ongoing support, which represents a significant implementation consideration for healthcare institutions.
 
-\textbf{Internet Connectivity Dependency:} Some system features require reliable internet connectivity for cloud-based AI processing, which may be challenging in certain healthcare environments with limited connectivity.
+\textbf{Limited Validation Scope:} Current evaluation is limited to specific use cases and institutional contexts. Broader validation across different institutions and use cases would strengthen confidence in the system's general applicability.
 
-\subsection{Lessons Learned and Best Practices}
+\subsection{Future Development Directions}
 
-The implementation and evaluation process provided valuable insights for future development and deployment:
+The current implementation provides a foundation for continued development and enhancement:
 
-\textbf{User-Centric Design Importance:} The success of the system is largely attributed to its user-centric design approach that prioritizes medical professional workflows and preferences. Continuous user feedback throughout development was crucial for achieving high acceptance rates.
+\textbf{AI Model Improvement:} Ongoing development of AI models with expanded training data and improved algorithms could enhance prediction accuracy and consistency across different clinical scenarios.
 
-\textbf{Gradual Integration Strategy:} The most successful deployments utilized gradual integration strategies that allowed users to adapt to new workflows progressively. Immediate full-scale deployment often resulted in resistance and lower adoption rates.
+\textbf{Feature Enhancement:} Additional workflow features and user interface improvements could further enhance system utility and user experience based on ongoing feedback and requirements analysis.
 
-\textbf{Training and Support Critical:} Comprehensive training programs and ongoing technical support are essential for successful system adoption. Institutions with dedicated training programs achieved significantly higher adoption rates and user satisfaction scores.
+\textbf{Integration Expansion:} Enhanced integration capabilities with existing hospital information systems and medical imaging infrastructure could improve system adoption and utility.
 
-\textbf{Customization Flexibility:} The ability to customize workflows and interface layouts for specific institutional requirements proved crucial for successful integration. One-size-fits-all approaches were less successful in diverse healthcare environments.
+\textbf{Validation Extension:} Expanded evaluation across different institutions and use cases would provide valuable insights for system improvement and broader deployment.
 
-\textbf{Performance Monitoring Value:} Continuous performance monitoring and optimization based on real usage patterns enabled significant improvements in system responsiveness and user experience over time.
-
-The evaluation results demonstrate that the intelligent medical annotation system successfully achieves its primary objectives of reducing annotation time while maintaining quality and achieving high user acceptance. The system represents a significant advancement in medical annotation technology and provides a solid foundation for future development and enhancement. 
+The implemented system represents a meaningful step toward practical AI-assisted medical annotation, demonstrating that such systems can provide valuable support to medical professionals while respecting the central importance of human expertise in clinical decision-making. Future development will focus on addressing current limitations while building on the system's demonstrated strengths and user acceptance. 
