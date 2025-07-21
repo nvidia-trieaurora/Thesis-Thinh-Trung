@@ -2,259 +2,235 @@
 
 \section{Summary of Contributions}
 
-\subsection{Achievement of Research Objectives}
+\subsection{Research Objectives and Outcomes}
 
-This thesis has successfully developed and implemented an intelligent medical annotation system that addresses the critical challenges identified in medical imaging data labeling workflows. The research objectives outlined in Chapter 1 have been systematically achieved through a comprehensive approach that combines theoretical analysis, practical implementation, and empirical evaluation.
+This thesis has developed and implemented a medical annotation system that addresses key challenges in medical imaging data labeling workflows. The research objectives outlined in Chapter 1 have been systematically pursued through a comprehensive approach combining theoretical analysis, practical implementation, and empirical evaluation.
 
 \textbf{Objective 1: Integrated Annotation Platform Development}
-The research has successfully created a unified platform that seamlessly integrates medical image viewing capabilities with AI-assisted annotation tools. The platform combines the strengths of established open-source tools (OHIF Viewer, MONAI Label, Orthanc) into a cohesive system that provides medical professionals with an intuitive and powerful annotation environment.
+The research has created a unified platform that integrates medical image viewing capabilities with AI-assisted annotation tools. The platform combines established open-source tools (OHIF Viewer, MONAI Label, Orthanc) into a cohesive system that provides medical professionals with a functional annotation environment.
 
-Key achievements include:
+Key outcomes include:
 \begin{itemize}
-    \item Successful integration of four major system components through well-designed APIs and communication protocols
-    \item Implementation of a unified user interface that eliminates the complexity of multi-tool workflows
-    \item Development of flexible deployment options supporting both small clinical installations and large-scale enterprise environments
-    \item Creation of comprehensive documentation and deployment guides that enable practical adoption
+    \item Integration of four major system components through well-designed APIs and communication protocols
+    \item Implementation of a unified user interface that simplifies multi-tool workflows
+    \item Development of flexible deployment options supporting different institutional requirements
+    \item Creation of documentation and deployment guides that enable practical adoption
 \end{itemize}
 
-\textbf{Objective 2: AI-Assisted Segmentation Implementation}
-The integration of advanced AI models has been successfully implemented, providing intelligent assistance that significantly reduces annotation time while maintaining high quality standards.
+\textbf{Objective 2: AI-Assisted Annotation Implementation}
+The integration of AI models has been implemented to provide intelligent assistance that can reduce annotation time while maintaining acceptable quality standards in routine annotation tasks.
 
-Specific achievements include:
+Key outcomes include:
 \begin{itemize}
-    \item Integration of VISTA3D foundation model supporting segmentation of 127+ anatomical structures
-    \item Implementation of interactive segmentation capabilities through DeepEdit and similar tools
-    \item Development of real-time AI assistance that adapts to user corrections and preferences
-    \item Achievement of 71\% average reduction in annotation time while maintaining 96.8\% accuracy
+    \item Integration of MONAI Label framework supporting segmentation of multiple anatomical structures
+    \item Implementation of interactive segmentation capabilities through AI-human collaboration tools
+    \item Development of AI assistance that adapts to user corrections and preferences
+    \item Demonstration of practical utility in medical annotation workflows
 \end{itemize}
 
-\textbf{Objective 3: Flexible Workflow Management Design}
-The system implements a sophisticated workflow management capability that supports various annotation scenarios from simple single-annotator tasks to complex multi-stage collaborative workflows.
+\textbf{Objective 3: Workflow Management Design}
+The system implements workflow management capability that supports various annotation scenarios from simple single-annotator tasks to collaborative workflows.
 
-Major accomplishments include:
+Key outcomes include:
 \begin{itemize}
     \item Development of a flexible workflow engine supporting multiple annotation paradigms
-    \item Implementation of automated task assignment based on expert availability and specialization
-    \item Creation of comprehensive quality control mechanisms with multi-stage review processes
-    \item Integration of real-time collaboration features enabling distributed annotation teams
+    \item Implementation of task assignment and progress tracking mechanisms
+    \item Creation of quality control mechanisms with review processes
+    \item Integration of real-time collaboration features for annotation teams
 \end{itemize}
 
-\textbf{Objective 4: System Scalability and Integration}
-The system architecture successfully supports scalability requirements and integrates effectively with existing medical imaging infrastructure.
+\textbf{Objective 4: System Integration and Deployment}
+The system architecture supports practical deployment and integrates with existing medical imaging infrastructure.
 
 Key results include:
 \begin{itemize}
-    \item Demonstration of concurrent support for 50+ simultaneous users with minimal performance degradation
-    \item Successful integration with existing PACS systems through standard DICOM protocols
-    \item Implementation of flexible deployment strategies supporting various institutional requirements
-    \item Development of comprehensive security and compliance features meeting healthcare regulatory standards
+    \item Deployment in multiple institutional environments
+    \item Integration with existing PACS systems through standard DICOM protocols
+    \item Implementation of deployment strategies supporting various institutional requirements
+    \item Development of security and compliance features meeting healthcare standards
 \end{itemize}
 
 \subsection{Technical Contributions}
 
-The research has made several significant technical contributions to the field of medical data annotation and AI-assisted healthcare technology:
+The research has made several technical contributions to the field of medical data annotation and AI-assisted healthcare technology:
 
-\textbf{Novel Integration Architecture}
-The thesis presents a novel microservices architecture that successfully integrates multiple specialized medical imaging tools into a unified platform. This architecture addresses the fragmentation problem that has historically limited the adoption of AI assistance in clinical workflows.
+\textbf{Integration Architecture}
+The thesis presents a microservices architecture that integrates multiple specialized medical imaging tools into a unified platform. This architecture addresses the fragmentation problem that has historically limited the adoption of AI assistance in clinical workflows.
 
 Technical innovations include:
 \begin{itemize}
     \item Event-driven integration patterns that enable loose coupling while maintaining data consistency
     \item Real-time synchronization mechanisms supporting collaborative annotation workflows
-    \item Adaptive load balancing that optimizes performance across different system components
-    \item Comprehensive API design that enables extensibility and future enhancement
+    \item API design that enables extensibility and future enhancement
+    \item Modular architecture that supports ongoing improvement and customization
 \end{itemize}
 
 \textbf{AI-Human Collaboration Framework}
-The research develops an innovative framework for AI-human collaboration in medical annotation that goes beyond simple automation to create synergistic interactions between AI capabilities and medical expertise.
+The research develops a framework for AI-human collaboration in medical annotation that goes beyond simple automation to create productive interactions between AI capabilities and medical expertise.
 
 Key innovations include:
 \begin{itemize}
     \item Interactive refinement mechanisms that enable progressive improvement of AI predictions
-    \item Uncertainty visualization that guides expert attention to areas requiring manual review
-    \item Adaptive learning capabilities that improve AI performance based on user corrections
-    \item Context-aware AI assistance that adjusts behavior based on imaging modality and clinical scenario
+    \item User guidance systems that maintain human control over the annotation process
+    \item Adaptive AI assistance that adjusts behavior based on user feedback
+    \item Context-aware AI assistance that considers imaging modality and clinical scenario
 \end{itemize}
 
-\textbf{Workflow Orchestration Engine}
-The thesis presents a sophisticated workflow orchestration engine specifically designed for medical annotation scenarios, supporting complex multi-stage processes with quality control and consensus building mechanisms.
+\textbf{Workflow Management System}
+The thesis presents a workflow management system specifically designed for medical annotation scenarios, supporting multi-stage processes with quality control mechanisms.
 
 Technical contributions include:
 \begin{itemize}
-    \item State machine implementation with atomic transaction support for workflow consistency
-    \item Flexible routing algorithms that support conditional workflows and consensus building
-    \item Performance optimization techniques that maintain sub-second response times for workflow operations
-    \item Comprehensive audit trails that support compliance and quality assurance requirements
+    \item State machine implementation with transaction support for workflow consistency
+    \item Flexible routing algorithms that support conditional workflows
+    \item Performance optimization techniques that maintain responsive workflow operations
+    \item Audit trails that support compliance and quality assurance requirements
 \end{itemize}
 
-\subsection{Practical Impact and Benefits}
+\subsection{Practical Impact and Validation}
 
-The research demonstrates significant practical impact through measurable improvements in medical annotation efficiency and quality:
+The research demonstrates practical impact through real-world deployment and user acceptance:
 
-\textbf{Quantifiable Efficiency Improvements}
-The system achieves substantial quantifiable benefits that directly impact healthcare operations:
+\textbf{User Acceptance and Satisfaction}
+The system achieves positive user acceptance as demonstrated through user studies:
 \begin{itemize}
-    \item 71\% average reduction in annotation time across multiple medical imaging tasks
-    \item 96.8\% annotation accuracy maintained despite significant time savings
-    \item 94\% user adoption rate across multiple institutional environments
-    \item 23\% improvement in overall workflow throughput for participating medical centers
+    \item High usability scores across different user groups (radiologists and technicians)
+    \item Positive feedback on AI assistance quality and interface design
+    \item Strong user satisfaction with time savings and overall system utility
+    \item Adoption in institutional environments
 \end{itemize}
 
-\textbf{Healthcare Professional Empowerment}
-The system successfully empowers healthcare professionals by providing tools that enhance rather than replace their expertise:
+\textbf{Clinical Workflow Integration}
+The system integrates with existing clinical practices:
 \begin{itemize}
-    \item Medical professionals report increased job satisfaction due to reduced repetitive work
-    \item Expert knowledge is better utilized on complex cases requiring specialized judgment
-    \item Junior staff benefit from AI guidance that accelerates their learning and development
-    \item Quality control processes are enhanced through automated consistency checking
+    \item Medical professionals report that AI assistance provides useful support for routine tasks
+    \item Users appreciate the collaborative approach that maintains their control over annotations
+    \item The system works effectively as a supportive tool rather than an automated replacement
+    \item Gradual implementation strategies support system adoption
 \end{itemize}
 
-\textbf{Institutional Benefits}
-Healthcare institutions implementing the system report multiple operational benefits:
+\textbf{Technical Validation}
+The implementation demonstrates technical feasibility and reliability:
 \begin{itemize}
-    \item Increased capacity to handle growing medical imaging volumes without proportional staff increases
-    \item Improved consistency in annotation quality across different annotators and time periods
-    \item Enhanced ability to support medical AI research and development initiatives
-    \item Reduced training time for new staff members through intelligent guidance features
+    \item Integration of multiple complex medical imaging tools
+    \item Stable performance in multi-user environments
+    \item Effective real-time collaboration capabilities
+    \item Robust security and data protection implementation
 \end{itemize}
 
 \section{Limitations and Challenges}
 
 \subsection{Current System Limitations}
 
-While the research has achieved its primary objectives, several limitations have been identified that provide opportunities for future improvement:
+While the research has achieved its primary objectives, several limitations have been identified:
 
-\textbf{AI Model Dependency and Performance Variability}
-The system's effectiveness is dependent on the performance of underlying AI models, which varies across different imaging modalities and clinical scenarios:
+\textbf{AI Model Performance Variability}
+The system's effectiveness depends on the performance of underlying AI models, which varies across different scenarios:
 
 \begin{itemize}
-    \item Some anatomical structures and pathological conditions remain challenging for automated segmentation
-    \item AI model performance may degrade when applied to imaging data from different institutions or equipment
-    \item Rare or unusual cases may not be well-represented in AI training data, leading to suboptimal assistance
-    \item Model updates and improvements require careful validation and deployment procedures
+    \item AI assistance effectiveness varies significantly across different imaging modalities and clinical cases
+    \item Some anatomical structures and pathological conditions remain challenging for automated assistance
+    \item Complex or unusual cases may not benefit significantly from current AI capabilities
+    \item Model performance may vary when applied to imaging data from different institutions or equipment
 \end{itemize}
 
-\textbf{Hardware and Infrastructure Requirements}
-The system requires significant computational resources that may limit deployment in resource-constrained environments:
+\textbf{Implementation and Resource Requirements}
+The system requires significant resources that may limit deployment in some environments:
 
 \begin{itemize}
-    \item GPU acceleration is necessary for optimal AI performance, increasing hardware costs
-    \item High-speed internet connectivity is required for cloud-based AI processing features
-    \item Storage requirements are substantial due to medical imaging data volumes and annotation metadata
-    \item Regular system maintenance and updates require technical expertise that may not be available in all institutions
+    \item Computational requirements for AI processing can be substantial
+    \item The system's AI features require appropriate hardware configurations for optimal performance
+    \item Reliable internet connectivity is beneficial for cloud-based processing features
+    \item Regular system maintenance and updates require technical expertise
 \end{itemize}
 
-\textbf{User Training and Adaptation Requirements}
-Despite efforts to create an intuitive interface, the system requires significant user training and adaptation:
+\textbf{User Training and Adaptation}
+Despite efforts to create an intuitive interface, the system requires user training and adaptation:
 
 \begin{itemize}
-    \item New users require 2-3 weeks to achieve full proficiency with advanced features
+    \item New users require time to achieve full proficiency with advanced features
     \item Resistance to workflow changes may limit adoption in some institutional environments
-    \item Ongoing training is necessary to keep users current with system updates and new features
-    \item Different user groups (radiologists, technicians, administrators) have varying training needs
+    \item Different user groups have varying training needs and adaptation periods
+    \item Ongoing training is necessary to keep users current with system updates
+\end{itemize}
+
+\textbf{Validation and Scope Constraints}
+The research was conducted within specific constraints that limit generalizability:
+
+\begin{itemize}
+    \item Current evaluation is limited to specific use cases and institutional contexts
+    \item User studies involved limited numbers of participants from specific geographical regions
+    \item Long-term clinical outcomes and reliability have not been extensively evaluated
+    \item Integration with broader healthcare information systems requires additional development
 \end{itemize}
 
 \subsection{Technical Challenges Encountered}
 
-The research and implementation process revealed several technical challenges that required innovative solutions:
+The research and implementation process revealed several technical challenges:
 
 \textbf{Integration Complexity}
-Integrating multiple complex systems presented significant technical challenges:
+Integrating multiple complex systems presented significant challenges:
 
 \begin{itemize}
-    \item Maintaining data consistency across distributed microservices required sophisticated synchronization mechanisms
-    \item Performance optimization across different system components required careful tuning and monitoring
-    \item Security implementation across multiple services required comprehensive authentication and authorization systems
+    \item Maintaining data consistency across distributed microservices required sophisticated mechanisms
+    \item Performance optimization across different system components required careful tuning
+    \item Security implementation across multiple services required comprehensive authentication systems
     \item Version compatibility between different open-source components required ongoing maintenance
 \end{itemize}
 
 \textbf{Real-Time Collaboration Implementation}
-Implementing real-time collaborative features for medical annotation presented unique challenges:
+Implementing real-time collaborative features presented unique challenges:
 
 \begin{itemize}
-    \item Conflict resolution for simultaneous annotations required sophisticated algorithms
+    \item Conflict resolution for simultaneous annotations required careful algorithm design
     \item Network latency and reliability issues affected real-time synchronization quality
-    \item Scalability of real-time features required optimization for large user groups
-    \item User interface design for collaborative scenarios required extensive usability testing
+    \item User interface design for collaborative scenarios required extensive consideration
+    \item Scalability optimization for multiple concurrent users required ongoing refinement
 \end{itemize}
 
-\textbf{Medical Domain-Specific Requirements}
-Healthcare-specific requirements created additional complexity beyond general software development:
+\textbf{Medical Domain Requirements}
+Healthcare-specific requirements created additional complexity:
 
 \begin{itemize}
-    \item HIPAA compliance and medical data privacy requirements influenced all design decisions
-    \item Medical workflow integration required deep understanding of clinical practices
-    \item Quality control standards exceeded typical software quality requirements
-    \item Regulatory compliance documentation required extensive effort and expertise
-\end{itemize}
-
-\subsection{Scope Constraints and Research Boundaries}
-
-The research was conducted within specific scope constraints that define boundaries for the contributions and limit generalizability:
-
-\textbf{Limited Clinical Validation}
-While the system has been successfully tested in multiple institutional environments, comprehensive clinical validation was beyond the scope of this research:
-
-\begin{itemize}
-    \item Long-term clinical outcomes of improved annotation efficiency have not been measured
-    \item Integration with electronic health records and clinical decision support systems was not evaluated
-    \item Impact on diagnostic accuracy and patient care quality requires additional research
-    \item Regulatory approval processes for clinical deployment were not completed
-\end{itemize}
-
-\textbf{Technology and Platform Constraints}
-The research focused on specific technology platforms and approaches, limiting broader applicability:
-
-\begin{itemize}
-    \item Focus on web-based technologies may not address all institutional deployment preferences
-    \item Concentration on CT and MRI modalities limits applicability to other imaging types
-    \item Open-source platform emphasis may not address commercial support requirements
-    \item English and Vietnamese language support limits international applicability
-\end{itemize}
-
-\textbf{Scale and Resource Limitations}
-Research resources and timeline constraints limited the scope of evaluation and validation:
-
-\begin{itemize}
-    \item User studies involved limited numbers of participants from specific geographical regions
-    \item Dataset diversity was constrained by data availability and privacy requirements
-    \item Performance testing was limited to specific hardware configurations and usage patterns
-    \item Long-term reliability and maintenance requirements were not fully evaluated
+    \item Medical data privacy and security requirements influenced all design decisions
+    \item Clinical workflow integration required deep understanding of medical practices
+    \item Quality standards exceeded typical software development requirements
+    \item Regulatory compliance considerations required extensive documentation and validation
 \end{itemize}
 
 \section{Future Work and Research Directions}
 
 \subsection{Short-Term Improvements and Enhancements}
 
-Several opportunities exist for immediate improvements and enhancements to the current system:
+Several opportunities exist for immediate improvements to the current system:
 
-\textbf{AI Model Enhancement and Expansion}
-Continuous improvement of AI capabilities represents the most impactful area for short-term development:
+\textbf{AI Model Enhancement}
+Continuous improvement of AI capabilities represents a high-impact area for development:
 
 \begin{itemize}
-    \item Integration of newer foundation models as they become available (SAM 2, MedSAM, etc.)
+    \item Integration of newer foundation models as they become available
     \item Development of institution-specific model fine-tuning capabilities
-    \item Implementation of federated learning approaches for collaborative model improvement
-    \item Addition of uncertainty quantification and confidence scoring for all AI predictions
-    \item Support for additional imaging modalities including ultrasound, mammography, and nuclear medicine
+    \item Implementation of uncertainty quantification and confidence scoring for AI predictions
+    \item Support for additional imaging modalities beyond current CT and MRI focus
+    \item Exploration of federated learning approaches for collaborative model improvement
 \end{itemize}
 
-\textbf{User Experience and Interface Improvements}
-User feedback has identified several areas for interface and workflow improvements:
+\textbf{User Experience Improvements}
+User feedback has identified several areas for interface and workflow enhancements:
 
 \begin{itemize}
-    \item Implementation of customizable interface layouts for different user roles and preferences
+    \item Implementation of customizable interface layouts for different user roles
     \item Development of mobile and tablet applications for flexible access scenarios
-    \item Addition of voice control and gesture recognition for hands-free operation
     \item Enhancement of keyboard shortcuts and workflow automation features
-    \item Integration of augmented reality (AR) visualization for complex 3D annotation tasks
+    \item Addition of voice control capabilities for hands-free operation
+    \item Integration of augmented reality visualization for complex 3D annotation tasks
 \end{itemize}
 
 \textbf{Performance and Scalability Optimization}
-System performance can be further optimized through several technical improvements:
+System performance can be further optimized through technical improvements:
 
 \begin{itemize}
-    \item Implementation of edge computing capabilities for reduced latency in AI processing
+    \item Implementation of edge computing capabilities for reduced AI processing latency
     \item Development of more efficient caching and prefetching algorithms
     \item Optimization of database queries and indexing for improved response times
     \item Implementation of advanced load balancing and auto-scaling capabilities
@@ -266,7 +242,7 @@ System performance can be further optimized through several technical improvemen
 Several long-term research directions build upon the foundation established by this thesis:
 
 \textbf{Advanced AI-Human Collaboration}
-Future research can explore more sophisticated forms of AI-human collaboration in medical annotation:
+Future research can explore more sophisticated forms of collaboration:
 
 \begin{itemize}
     \item Development of explainable AI systems that provide reasoning for annotation suggestions
@@ -277,18 +253,18 @@ Future research can explore more sophisticated forms of AI-human collaboration i
 \end{itemize}
 
 \textbf{Workflow Intelligence and Automation}
-Future systems could incorporate more intelligent workflow management and automation capabilities:
+Future systems could incorporate more intelligent workflow management:
 
 \begin{itemize}
     \item Development of AI-powered project management that optimizes resource allocation
     \item Implementation of predictive analytics for annotation timeline and quality forecasting
     \item Creation of intelligent task routing that considers case complexity and annotator expertise
     \item Development of automated quality assurance systems that reduce manual review requirements
-    \item Research into self-optimizing workflows that improve efficiency based on historical performance
+    \item Research into self-optimizing workflows that improve based on historical performance
 \end{itemize}
 
-\textbf{Integration with Broader Healthcare Ecosystems}
-Long-term research directions include integration with broader healthcare technology ecosystems:
+\textbf{Healthcare Ecosystem Integration}
+Long-term research directions include integration with broader healthcare technology:
 
 \begin{itemize}
     \item Development of integration with electronic health record (EHR) systems
@@ -300,21 +276,21 @@ Long-term research directions include integration with broader healthcare techno
 
 \subsection{Scalability and Enterprise Deployment}
 
-Future research should address the challenges of large-scale enterprise deployment:
+Future research should address challenges of large-scale deployment:
 
-\textbf{Multi-Institutional Collaboration Platforms}
-Research into systems that support collaboration across multiple healthcare institutions:
+\textbf{Multi-Institutional Collaboration}
+Research into systems that support collaboration across multiple institutions:
 
 \begin{itemize}
     \item Development of federated annotation platforms that preserve institutional data privacy
     \item Creation of standardized annotation protocols that work across different institutions
     \item Implementation of cross-institutional quality control and validation mechanisms
     \item Development of collaborative research platforms for multi-site medical studies
-    \item Research into blockchain and distributed ledger technologies for annotation provenance
+    \item Research into blockchain technologies for annotation provenance and data integrity
 \end{itemize}
 
 \textbf{Global Health and Accessibility}
-Expanding the system's applicability to global health scenarios and resource-constrained environments:
+Expanding applicability to diverse healthcare environments:
 
 \begin{itemize}
     \item Development of lightweight versions optimized for low-resource environments
@@ -324,26 +300,11 @@ Expanding the system's applicability to global health scenarios and resource-con
     \item Research into cost-effective deployment models for small healthcare institutions
 \end{itemize}
 
-\subsection{Integration with Hospital Information Systems}
-
-Future work should focus on deeper integration with existing healthcare information systems:
-
-\textbf{Clinical Workflow Integration}
-Seamless integration with clinical workflows requires research into:
-
-\begin{itemize}
-    \item Real-time integration with hospital information systems (HIS) and radiology information systems (RIS)
-    \item Development of clinical decision support tools based on annotation data
-    \item Implementation of automated reporting systems that incorporate annotation results
-    \item Creation of quality metrics dashboards for clinical administrators
-    \item Research into the impact of annotation efficiency on overall clinical productivity
-\end{itemize}
-
 \textbf{Regulatory Compliance and Standardization}
-Advancing regulatory compliance and standardization efforts:
+Advancing regulatory compliance and industry standards:
 
 \begin{itemize}
-    \item Development of FDA and other regulatory approval pathways for AI-assisted annotation systems
+    \item Development of regulatory approval pathways for AI-assisted annotation systems
     \item Creation of industry standards for medical annotation quality and interoperability
     \item Implementation of comprehensive audit and compliance monitoring systems
     \item Development of certification programs for medical annotation systems
@@ -354,36 +315,36 @@ Advancing regulatory compliance and standardization efforts:
 
 \subsection{Research Impact and Significance}
 
-This thesis has successfully addressed a critical challenge in medical AI development by creating an intelligent annotation system that significantly improves the efficiency and quality of medical imaging data labeling. The research makes important contributions to both the technical understanding of AI-human collaboration in healthcare and the practical deployment of intelligent systems in clinical environments.
+This thesis has addressed an important challenge in medical AI development by creating a medical annotation system that demonstrates the practical utility of AI assistance in clinical workflows. The research makes contributions to both the technical understanding of AI-human collaboration in healthcare and the practical deployment of intelligent systems in medical environments.
 
-\textbf{Theoretical Contributions:} The research provides valuable insights into the design and implementation of AI-assisted medical workflows, demonstrating how advanced AI capabilities can be effectively integrated into existing clinical practices. The work establishes a foundation for future research into intelligent medical annotation systems and AI-human collaboration in healthcare.
+\textbf{Theoretical Contributions:} The research provides insights into the design and implementation of AI-assisted medical workflows, demonstrating how AI capabilities can be effectively integrated into existing clinical practices. The work establishes a foundation for future research into intelligent medical annotation systems.
 
-\textbf{Practical Applications:} The developed system has demonstrated real-world impact through deployment in multiple healthcare institutions, achieving measurable improvements in annotation efficiency while maintaining high quality standards. The system provides a practical solution that can be adopted by healthcare institutions seeking to improve their medical imaging annotation capabilities.
+\textbf{Practical Applications:} The developed system has demonstrated real-world applicability through deployment in healthcare institutions, achieving improvements in annotation workflow efficiency while maintaining acceptable quality standards. The system provides a practical solution for healthcare institutions seeking to enhance their medical imaging annotation capabilities.
 
-\textbf{Educational Value:} The research process and resulting system provide valuable educational resources for healthcare professionals, researchers, and technology developers working at the intersection of AI and healthcare. The comprehensive documentation and open-source approach enable others to build upon this work and contribute to the advancement of medical AI technology.
+\textbf{Educational Value:} The research process and resulting system provide valuable resources for healthcare professionals, researchers, and technology developers working at the intersection of AI and healthcare. The comprehensive documentation and implementation approach enable others to build upon this work.
 
 \subsection{Vision for Medical AI Annotation}
 
-Looking toward the future, this research contributes to a vision of medical AI annotation that enhances human expertise rather than replacing it. The intelligent annotation system represents a step toward a future where:
+Looking toward the future, this research contributes to a vision of medical AI annotation that enhances human expertise rather than replacing it:
 
-\textbf{AI Amplifies Human Expertise:} AI systems work as intelligent assistants that amplify the capabilities of medical professionals, enabling them to focus on complex cases requiring specialized knowledge while automating routine and repetitive tasks.
+\textbf{AI as Intelligent Assistant:} AI systems work as intelligent assistants that amplify the capabilities of medical professionals, enabling them to focus on complex cases requiring specialized knowledge while providing support for routine tasks.
 
-\textbf{Collaborative Intelligence Emerges:} The combination of AI capabilities and human expertise creates collaborative intelligence that exceeds the capabilities of either alone, leading to improved accuracy, efficiency, and innovation in medical imaging analysis.
+\textbf{Collaborative Intelligence:} The combination of AI capabilities and human expertise creates collaborative intelligence that exceeds the capabilities of either alone, leading to improved efficiency and innovation in medical imaging analysis.
 
-\textbf{Healthcare Becomes More Accessible:} Intelligent annotation systems help democratize access to high-quality medical imaging analysis by enabling smaller healthcare institutions to provide services that previously required large specialized teams.
+\textbf{Accessible Healthcare Technology:} Intelligent annotation systems help democratize access to advanced medical imaging analysis by enabling healthcare institutions of various sizes to benefit from AI assistance.
 
-\textbf{Continuous Learning and Improvement:} AI systems continuously learn from human interactions and feedback, becoming increasingly effective over time and adapting to local practices and requirements.
+\textbf{Continuous Learning and Adaptation:} AI systems continuously learn from human interactions and feedback, becoming increasingly effective over time and adapting to local practices and requirements.
 
-\textbf{Global Health Impact:} Standardized, intelligent annotation platforms enable collaboration and knowledge sharing across institutions and countries, accelerating medical research and improving global health outcomes.
+\textbf{Global Collaboration:} Standardized, intelligent annotation platforms enable collaboration and knowledge sharing across institutions and countries, accelerating medical research and improving healthcare outcomes.
 
 \subsection{Closing Remarks}
 
-The development of intelligent medical annotation systems represents a significant opportunity to improve healthcare delivery through the thoughtful application of AI technology. This thesis demonstrates that such systems can be successfully developed and deployed, achieving substantial practical benefits while maintaining the quality and safety standards required in healthcare environments.
+The development of intelligent medical annotation systems represents a significant opportunity to improve healthcare delivery through thoughtful application of AI technology. This thesis demonstrates that such systems can be developed and deployed, achieving practical benefits while maintaining the quality and safety standards required in healthcare environments.
 
-The success of this research depends not only on technical innovation but also on deep understanding of clinical workflows, user needs, and healthcare organizational requirements. The multidisciplinary approach taken in this research—combining computer science, medical imaging, and healthcare workflow analysis—provides a model for future research in healthcare AI.
+The success of this research depends not only on technical innovation but also on understanding clinical workflows, user needs, and healthcare organizational requirements. The multidisciplinary approach taken in this research—combining computer science, medical imaging, and healthcare workflow analysis—provides a model for future research in healthcare AI.
 
-As medical imaging continues to grow in volume and complexity, the need for intelligent annotation systems will only increase. The foundation established by this research provides a starting point for continued innovation and improvement in this critical area of healthcare technology.
+As medical imaging continues to grow in volume and complexity, the need for intelligent annotation systems will increase. The foundation established by this research provides a starting point for continued innovation and improvement in this important area of healthcare technology.
 
-The ultimate goal of this work is to improve patient care by enabling more efficient and accurate medical imaging analysis. While this thesis represents one step toward that goal, the continued development and refinement of intelligent medical annotation systems will be necessary to fully realize the potential of AI in healthcare.
+The ultimate goal of this work is to improve patient care by enabling more efficient and accurate medical imaging analysis. While this thesis represents one step toward that goal, continued development and refinement of intelligent medical annotation systems will be necessary to fully realize the potential of AI in healthcare.
 
-The research community, healthcare institutions, and technology developers must continue to collaborate to advance this field, ensuring that the benefits of AI technology are realized in ways that enhance rather than replace human expertise and ultimately improve health outcomes for patients worldwide. 
+The research community, healthcare institutions, and technology developers must continue to collaborate to advance this field, ensuring that AI technology benefits are realized in ways that enhance human expertise and ultimately improve health outcomes for patients worldwide. 
