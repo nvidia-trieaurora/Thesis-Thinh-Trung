@@ -193,7 +193,7 @@ Our proposed solution addresses the identified challenges through the developmen
 
 The proposed intelligent annotation system consists of four main integrated components that work together to provide comprehensive annotation capabilities:
 
-\textbf{Component 1: Workflow Management Platform (latn-5)}
+\textbf{Component 1: Workflow Management Platform}
 
 The workflow management platform serves as the central orchestration system that coordinates all annotation activities and manages system resources.
 
@@ -215,26 +215,32 @@ The workflow management platform serves as the central orchestration system that
     \item RESTful API design enabling integration with external systems
 \end{itemize}
 
-\textbf{Component 2: AI-Enhanced Annotation Interface (latn-3-ohif3)}
+\textbf{Component 2: AI-Enhanced Annotation Interface}
 
 The annotation interface provides medical professionals with an intuitive and powerful environment for viewing and annotating medical images with integrated AI assistance.
 
 \textit{Key Capabilities:}
 \begin{itemize}
     \item Advanced medical image visualization with DICOM compliance
-    \item Integrated AI-assisted segmentation and annotation tools
-    \item Real-time collaborative annotation features
-    \item Comprehensive measurement and analysis tools
-    \item Customizable interface layouts and preferences
-    \item Mobile and tablet compatibility for flexible access
+    \item Seamless integration between OHIF Viewer and MONAI Label for intelligent annotation support
+    \item Dual annotation modes: manual annotation for precise control and AI-assisted mode for accelerated workflows
+    \item Interactive AI guidance with auto-segmentation, class prompts, and point prompts for refined annotation
+    \item Real-time collaborative annotation features with multi-user support
+    \item Comprehensive review and commenting system allowing reviewers to provide feedback and approve annotations
+    \item Quality control workflows with annotation validation and approval mechanisms
+    \item Advanced measurement and analysis tools for precise medical assessments
+    \item Customizable interface layouts and preferences tailored to radiologist workflows
 \end{itemize}
 
 \textit{Technical Implementation:}
 \begin{itemize}
-    \item OHIF Viewer 3.x as the foundational imaging platform
-    \item Cornerstone3D for high-performance medical image rendering
-    \item Custom extensions for AI integration and workflow connectivity
-    \item WebGL-based visualization for optimal performance
+    \item OHIF Viewer 3.x as the foundational imaging platform with enhanced annotation capabilities
+    \item Direct integration with MONAI Label server through RESTful APIs for real-time AI assistance
+    \item Cornerstone3D for high-performance medical image rendering and annotation overlay
+    \item Custom extensions implementing dual-mode annotation interfaces (manual/AI-assisted)
+    \item Real-time commenting and review system with database persistence for annotation feedback
+    \item Collaborative features enabling simultaneous multi-user annotation and review
+    \item Visualization for optimal performance and smooth user interactions
 \end{itemize}
 
 \textbf{Component 3: AI Assistance Engine (MONAI Label Server)}
@@ -293,47 +299,4 @@ The four core components are integrated through a comprehensive communication ar
 
 \textbf{Security and Access Control:} A centralized authentication and authorization system ensures consistent security policies across all components while enabling fine-grained access control based on user roles and project requirements.
 
-\section{High-Level System Architecture}
-
-\subsection{System Architecture Overview}
-
-The proposed intelligent annotation system follows a microservices architecture pattern that provides scalability, maintainability, and flexibility while ensuring optimal performance for medical imaging workflows.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{content/resources/images/system-architecture.md}
-    \caption{High-Level System Architecture of the Intelligent Medical Annotation System}
-    \label{fig:high-level-architecture}
-\end{figure}
-
-\textbf{Multi-Tier Architecture Design:} The system implements a multi-tier architecture with clear separation between presentation, business logic, and data management layers. This separation enables independent scaling and optimization of each layer based on specific performance requirements.
-
-\textbf{Cloud-Native Design Principles:} The architecture follows cloud-native design principles, enabling deployment in various environments from on-premises healthcare data centers to public cloud platforms while maintaining consistent functionality and performance.
-
-\textbf{Microservices Organization:} Each major system component is implemented as an independent microservice with well-defined interfaces and responsibilities. This organization enables independent development, testing, and deployment of system components.
-
-\subsection{Data Flow Architecture}
-
-The system implements a sophisticated data flow architecture that efficiently handles the movement and processing of medical imaging data throughout the annotation workflow.
-
-\textbf{Medical Image Data Pipeline:} Medical images flow from source PACS systems through the Orthanc data management layer to the OHIF annotation interface. This pipeline includes automatic format conversion, metadata extraction, and performance optimization to ensure optimal user experience.
-
-\textbf{Annotation Data Management:} Annotation data flows bidirectionally between the annotation interface and the workflow management system, enabling real-time collaboration and progress tracking while maintaining data consistency and version control.
-
-\textbf{AI Integration Data Flow:} The AI assistance engine integrates into the data flow through standardized APIs that enable seamless transfer of image data for AI processing and return of AI-generated annotations to the user interface.
-
-\textbf{Workflow Orchestration:} The workflow management platform orchestrates data flow between all system components based on defined workflow rules and user activities, ensuring that annotation tasks progress efficiently through defined stages.
-
-\subsection{Integration Approach and Deployment Strategy}
-
-The system is designed to support flexible deployment scenarios that accommodate various institutional requirements and technical constraints.
-
-\textbf{Containerized Deployment:} All system components are containerized using Docker, enabling consistent deployment across different environments and simplifying system administration and maintenance.
-
-\textbf{Scalable Infrastructure:} The architecture supports both vertical and horizontal scaling, allowing institutions to adjust system capacity based on user load and data volume requirements.
-
-\textbf{Integration Gateway:} A centralized integration gateway manages communication between system components and external systems, providing a single point of control for system access and security policies.
-
-\textbf{Progressive Deployment Strategy:} The system supports progressive deployment strategies that allow institutions to gradually migrate from existing annotation workflows to the new intelligent system, minimizing disruption and enabling thorough testing and validation.
-
-This high-level architecture provides the foundation for the detailed system design and implementation that will be presented in the following chapters. The architecture ensures that the system can meet the identified requirements while providing flexibility for future enhancement and adaptation to evolving medical annotation needs. 
+The proposed solution provides a comprehensive foundation for intelligent medical annotation that addresses the identified challenges while enabling future enhancement and adaptation to evolving medical annotation needs. The detailed technical architecture and implementation strategies are presented in the following chapter. 
