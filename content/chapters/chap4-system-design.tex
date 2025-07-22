@@ -1,312 +1,205 @@
 \chapter{Detailed System Design}
+\label{chap:system_design}
 
-\section{Detailed System Architecture}
+This chapter provides a comprehensive exposition of the system's detailed design, articulating the architectural decisions, methodologies, and technological implementations that underpin the platform. The design philosophy centers on leveraging a modern, serverless architecture to achieve scalability, maintainability, and rapid development. Each section adopts a problem-solution paradigm, presenting a specific technical challenge encountered during the development lifecycle, followed by a detailed description of the implemented solution, its rationale, and its advantages.
 
-\subsection{Microservices Architecture Overview}
+\section{System Architecture Overview}
+\label{sec:system_architecture_overview}
 
-Deploying a complex medical annotation system in healthcare environments presents significant challenges that necessitate a microservices architecture approach \cite{newman2015building}. Traditional monolithic systems that bundle all functionality into a single application create operational bottlenecks and deployment complexities that are particularly problematic in medical imaging workflows where reliability, scalability, and integration flexibility are critical.
+The platform's architecture is a distributed system comprising several loosely coupled components, orchestrated to deliver a seamless data annotation experience. The high-level architecture, as depicted in Figure \ref{fig:system_architecture}, segregates responsibilities into four primary domains: the client-side frontend, the serverless backend, external service integrations, and a reverse proxy layer for routing and security.
 
-\textbf{Critical Need for Microservices Architecture:} Medical annotation systems must address diverse institutional requirements where different healthcare facilities have varying levels of technical infrastructure, IT expertise, and computational resources. The heterogeneous nature of medical imaging environments demands an architecture that can optimize resource utilization while maintaining system reliability. A microservices approach becomes essential to enable:
-
-\begin{itemize}
-    \item \textbf{Optimized Resource Allocation:} Deploy only necessary components, dramatically reducing hardware requirements and operational costs while maintaining full functionality
-    \item \textbf{Dynamic Scaling Capability:} Scale individual services independently based on real-time demand patterns (e.g., additional viewer instances during peak annotation periods, expanded AI processing during batch operations)
-    \item \textbf{Zero-Downtime Maintenance:} Update, patch, or maintain services independently without disrupting ongoing annotation workflows, ensuring continuous availability for critical medical operations
-    \item \textbf{Seamless Legacy Integration:} Integrate with existing hospital information systems through standardized APIs without requiring wholesale infrastructure replacement
-    \item \textbf{Fault Isolation and Recovery:} Handle component failures gracefully with automatic failover capabilities, preventing single points of failure from compromising entire annotation workflows
-    \item \textbf{Performance Optimization:} Optimize each service for its specific computational requirements (e.g., GPU acceleration for AI services, high-throughput storage for DICOM data)
-\end{itemize}
-
-\textbf{Strategic Service Decomposition:} The architecture is strategically decomposed into four specialized services, each optimized for specific functional domains and performance characteristics:
-
-\begin{itemize}
-    \item \textbf{Workflow Management Service (latn-5):} React-based platform using Supabase for real-time collaboration, handling project creation, task assignment, user management, and workflow orchestration
-    \item \textbf{Annotation Interface Service (latn-3-ohif3):} Enhanced OHIF Viewer providing medical image visualization, annotation tools, AI integration, and collaborative features
-    \item \textbf{AI Assistance Service (MONAI Label):} Containerized AI engine delivering foundation model support, interactive segmentation, and model-in-the-loop learning capabilities
-    \item \textbf{Data Management Service (Orthanc PACS):} DICOM-compliant storage system managing medical image storage, metadata indexing, and integration with existing hospital PACS infrastructure
-\end{itemize}
-
-\textbf{Intelligent Communication Architecture:} Services communicate through optimized API patterns that minimize latency and maximize throughput in medical imaging workflows. The system implements smart caching, connection pooling, and request batching to ensure optimal performance. For instance, when a user opens a medical study, the system orchestrates parallel data retrieval from multiple services while prefetching likely-needed resources, resulting in significantly faster load times and improved user experience.
-
-\textbf{Adaptive Deployment Optimization:} The microservices architecture enables deployment strategies that can be precisely matched to available infrastructure and performance requirements. This flexibility allows for optimization ranging from lightweight containerized deployments for resource-constrained environments to distributed cloud-native deployments that can scale dynamically based on demand, ensuring optimal performance-to-cost ratios across diverse operational scenarios.
-
-\textbf{Continuous Performance Enhancement:} The modular nature enables targeted optimization of individual components without affecting the entire system. This allows for iterative performance improvements, technology stack upgrades, and feature enhancements while maintaining system stability and backward compatibility, ensuring the annotation platform can evolve with advancing medical imaging requirements and technological innovations.
-
-Figure 4.1 illustrates the complete system architecture, demonstrating the end-to-end flow of the intelligent medical annotation system from user access through various integrated services, highlighting how the microservices architecture enables scalable, maintainable, and fault-tolerant medical imaging workflows.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{content/resources/images/chap4-system-design/system-architecture.png}
-\caption{Complete System Architecture - The intelligent medical annotation system architecture showing the comprehensive flow from user interaction through the Nginx reverse proxy to the React frontend, which integrates with multiple backend services including Supabase for real-time data management, OHIF Viewer for medical image visualization, and external services (MONAI Label and Orthanc DICOM Server) for AI assistance and medical data storage.}
-\label{fig:system-architecture}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{path/to/your/architecture-diagram.pdf}
+    \caption{High-Level System Architecture Diagram.}
+    \label{fig:system_architecture}
 \end{figure}
 
-The system architecture demonstrates several key optimization principles: the Nginx reverse proxy provides load balancing and SSL termination, the React frontend enables responsive user interfaces with real-time updates, Supabase delivers managed database services with built-in authentication and real-time capabilities, while external integrations with MONAI Label and Orthanc ensure specialized AI processing and DICOM compliance without adding complexity to the core system. This architectural approach maximizes performance while minimizing operational overhead.
+The frontend is a single-page application (SPA) built with React, responsible for all user interactions. The backend is implemented entirely on the Supabase platform, utilizing its PostgreSQL database, authentication services, and real-time capabilities. This backend-as-a-service (BaaS) model obviates the need for traditional server management. Key external integrations, such as the OHIF Viewer for DICOM rendering and MONAI Label for AI-assisted annotation, are incorporated to provide specialized functionality. An Nginx reverse proxy serves as the entry point to the system, managing request routing and centralizing authentication concerns. The subsequent sections will deconstruct this architecture, providing a granular analysis of each component's design.
 
-\subsection{Component Interaction Design}
+\section{Frontend Architecture}
+\label{sec:frontend_architecture}
 
-The system components interact through well-defined interfaces that ensure loose coupling while maintaining functional coherence and data consistency.
+The frontend architecture is engineered for rapid development, maintainability, and a high-quality user experience. The design addresses two fundamental challenges in modern web application development: the overhead of building standard application features and the complexity of client-side state management.
 
-\textbf{API Gateway Pattern:} A centralized API gateway manages all external communication to the system, providing authentication, authorization, rate limiting, and request routing. This pattern simplifies client integration and enables consistent security policy enforcement across all services.
+\subsection{Accelerating Development with a Headless Framework}
+\label{subsec:accelerating_development}
 
-\textbf{Database per Service:} Each microservice maintains its own database instance optimized for its specific data access patterns and performance requirements. This approach prevents database-level coupling while enabling service-specific optimization.
+\subsubsection{Problem: Boilerplate and Scaffolding Overhead}
+Developing a data-intensive application necessitates a significant amount of boilerplate code. For each distinct data entity—such as projects, tasks, or users—a developer must manually implement a suite of standard features: a view to list all items, a form to create a new item, a view to display an item's details, a form to edit it, and the logic to delete it. This pattern, commonly known as Create, Read, Update, Delete (CRUD), extends beyond data operations to include user authentication flows, system notifications, navigation menus, and breadcrumbs.
 
-\textbf{Event-Driven Integration:} Services publish and subscribe to domain events that enable loose coupling and asynchronous processing. This pattern is particularly important for workflow state transitions and long-running AI processing tasks.
+Without a structured framework, this leads to a proliferation of repetitive code. A developer might write a custom hook or component for fetching project data, another for task data, and so on. Each implementation would require its own state management (`useState`), effect handling (`useEffect`), and API call logic, as illustrated below. This approach is not only time-consuming but also highly susceptible to inconsistencies and bugs.
 
-\textbf{Circuit Breaker Pattern:} The system implements circuit breaker patterns to handle service failures gracefully, preventing cascade failures and maintaining system stability during partial outages.
+\begin{verbatim}
+// Repetitive, manual data fetching for a single resource
+function ProjectList() {
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-\subsection{Security and Access Control Architecture}
+    useEffect(() => {
+        setLoading(true);
+        api.get('/projects')
+            .then(response => setProjects(response.data))
+            .catch(err => setError(err))
+            .finally(() => setLoading(false));
+    }, []);
 
-Security is implemented as a cross-cutting concern that protects both data and system functionality while enabling appropriate access for authorized users.
+    // ... render logic for loading, error, and data states
+}
 
-\textbf{Zero Trust Security Model:} The system implements a zero trust security model where every request is authenticated and authorized regardless of its source \cite{rose2020zero}. This approach ensures comprehensive security protection in distributed and cloud deployment scenarios.
+// This entire block of code would need to be duplicated and
+// adapted for tasks, users, and every other resource.
+\end{verbatim}
 
-\textbf{Attribute-Based Access Control (ABAC):} Beyond role-based permissions, the system implements attribute-based access control that considers contextual factors such as data sensitivity, project membership, and temporal constraints when making access decisions \cite{hu2014guide}.
+The primary challenge was to eliminate this redundancy and abstract these common patterns in a way that accelerates development without sacrificing the flexibility needed for a custom user interface and complex business logic.
 
-\textbf{Data Encryption and Protection:} All data is encrypted both in transit and at rest using industry-standard encryption algorithms. The system implements key management practices that ensure encryption keys are properly secured and rotated according to healthcare security standards.
+\subsubsection{Solution: Adoption of the Refine.dev Framework}
+The platform leverages the \texttt{refine.dev} framework, a headless, React-based framework designed specifically to address the challenges of building data-intensive applications. Its core architectural concept is the \textbf{resource}. A resource is a declarative definition of a data entity within the application. By defining a resource, the developer provides \texttt{refine.dev} with the necessary metadata to automate a wide array of functionalities.
 
-\section{Workflow Management Module Design}
-
-\subsection{Database Schema and Data Architecture}
-
-The workflow management module utilizes a carefully designed PostgreSQL database schema that efficiently supports complex medical annotation workflows while maintaining data integrity and performance.
-
-\textbf{Core Entity Design:}
-
-\begin{table}[htbp]
-\centering
-\caption{Core Database Entities and Relationships}
-\label{tab:database-entities}
-\begin{tabular}{|p{3cm}|p{4cm}|p{7cm}|}
-\hline
-\textbf{Entity} & \textbf{Primary Purpose} & \textbf{Key Relationships} \\
-\hline
-Projects & Project organization and configuration & Has many workflows, tasks, and members \\
-\hline
-Workflows & Workflow definition and orchestration & Belongs to project, has many stages and tasks \\
-\hline
-Workflow Stages & Individual workflow steps & Belongs to workflow, defines transitions \\
-\hline
-Tasks & Individual annotation work items & Belongs to project, progresses through stages \\
-\hline
-Task Assignments & User-specific work assignments & Links tasks to users at specific stages \\
-\hline
-Users & System user management & Has roles and project memberships \\
-\hline
-Annotations & Annotation results and metadata & Belongs to task assignments \\
-\hline
-\end{tabular}
-\end{table}
-
-\textbf{Workflow State Management:} The system implements a sophisticated state machine that tracks task progression through workflow stages. State transitions are implemented as atomic database operations that ensure consistency even in high-concurrency scenarios.
-
-\textbf{Audit Trail Implementation:} All workflow operations are logged in comprehensive audit tables that track user actions, state changes, and system events. This audit trail supports compliance requirements and enables detailed workflow analysis and optimization.
-
-\subsection{Workflow Engine Implementation}
-
-The workflow engine represents the core business logic component that orchestrates annotation workflows according to defined rules and policies.
-
-\textbf{Rule-Based Workflow Processing:} The engine implements a rule-based processing system that evaluates workflow transitions based on configurable rules. This approach enables complex workflow scenarios such as consensus building, quality control checkpoints, and conditional routing.
-
-\textbf{Stage Type Implementation:} The system supports multiple workflow stage types, each with specific behaviors and requirements:
-
+For instance, declaring a "projects" resource:
+\begin{verbatim}
+<Refine
+    dataProvider={...}
+    resources={[
+        {
+            name: "projects",
+            list: "/projects",
+            create: "/projects/create",
+            edit: "/projects/edit/:id",
+            show: "/projects/show/:id",
+            meta: { canDelete: true }
+        }
+        // ... other resources
+    ]}
+>
+    {/* ... */}
+</Refine>
+\end{verbatim}
+This single definition unlocks a suite of powerful, interconnected features:
 \begin{itemize}
-    \item \textit{START:} Initial workflow entry point with automatic progression
-    \item \textit{ANNOTATE:} Manual annotation stages requiring user interaction
-    \item \textit{REVIEW:} Quality control stages with approval/rejection decisions
-    \item \textit{CONSENSUS:} Multi-annotator stages requiring agreement mechanisms
-    \item \textit{MITL (Model-in-the-Loop):} AI-assisted stages with automatic processing
-    \item \textit{ROUTER:} Conditional routing stages based on configurable criteria
-    \item \textit{SUCCESS:} Workflow completion stages with final processing
+    \item \textbf{Data Hooks}: It enables the use of high-level data hooks like `useList` for fetching collections, `useOne` for single items, `useCreate` for mutations, etc., which are pre-configured to communicate with the backend `dataProvider`.
+    \item \textbf{Automated Routing}: The framework automatically generates the necessary routes for the list, create, edit, and show pages.
+    \item \textbf{UI Generation}: When paired with a UI library like Ant Design, `refine.dev` can automatically generate side-menu navigation links and breadcrumbs for each resource, ensuring a consistent user experience.
+    \item \textbf{Authentication and Authorization}: The `meta` field can be used to integrate with the `accessControlProvider`, allowing for granular control over which users can perform actions like deleting a resource.
+\end{itemize}
+This resource-centric, declarative approach abstracts away the repetitive, low-level implementation details of CRUD operations and application infrastructure. It allowed the development team to focus engineering effort on high-value, domain-specific features, such as the workflow builder and the integrated commenting system, thereby dramatically increasing development velocity and improving code consistency.
+
+\subsection{Efficient Data Caching and State Synchronization}
+\label{subsec:efficient_caching}
+
+\subsubsection{Problem: Inefficient Data Fetching and UI Inconsistency}
+In any complex single-page application, managing server state—data fetched from a remote source—is a formidable challenge. Traditional approaches often lead to significant performance issues and a brittle codebase. Two common anti-patterns illustrate this problem:
+
+\begin{enumerate}
+    \item \textbf{Component-Level Fetching}: The most straightforward approach is for each component to fetch its own data. This leads to request waterfalls, where a parent component fetches data and then a child component, upon rendering, initiates its own fetch. This creates perceptible latency. Furthermore, if multiple, unrelated components on the same page require the same data (e.g., the current user's profile), they will each make a redundant API call for that data, as shown in Figure \ref{fig:request_waterfall}.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{path/to/your/request-waterfall-diagram.pdf}
+        \caption{Redundant API calls from independent components.}
+        \label{fig:request_waterfall}
+    \end{figure}
+
+    \item \textbf{Manual Caching with Global State}: To solve the redundancy issue, developers often turn to global state management libraries like Redux or the Context API. Data is fetched once and stored in a central store. While this prevents duplicate requests, it introduces immense boilerplate complexity. For each API endpoint, one must write actions, reducers, selectors, and thunks/sagas to handle the fetching, loading, success, and error states. More critically, the cache becomes stale. If a user updates their profile in one part of the app, it is the developer's manual responsibility to ensure the cache is updated and all subscribed components are re-rendered. This manual cache invalidation is a frequent source of bugs, leading to inconsistent and outdated UIs.
+\end{enumerate}
+
+\subsubsection{Solution: Declarative Caching and Automated Invalidation with TanStack Query}
+The \texttt{refine.dev} framework addresses these challenges by integrating TanStack Query as its default server-state management engine. This library provides a robust, out-of-the-box solution that automates caching, background updates, and state synchronization.
+
+When a data hook like `useList("projects")` is called, TanStack Query fetches the data and stores it in a global, in-memory cache under a unique query key (`["projects"]`). Subsequent calls to `useList("projects")` from any other component will instantly receive the cached data, eliminating redundant network requests. The behavior of this cache is controlled via two key parameters:
+\begin{itemize}
+    \item \textbf{\texttt{staleTime}}: Dictates how long cached data is considered "fresh." Requests made within this window are served from the cache without a network call.
+    \item \textbf{\texttt{cacheTime}}: Dictates how long inactive data is kept in memory before being garbage collected.
 \end{itemize}
 
-\textbf{Concurrent Processing Support:} The workflow engine supports concurrent processing of multiple tasks and parallel execution of workflow stages where appropriate. This capability significantly improves overall system throughput for large annotation projects.
-
-\subsection{Task Assignment and Routing Logic}
-
-The task assignment system implements intelligent routing that considers multiple factors to optimize annotation efficiency and quality.
-
-\textbf{Competency-Based Assignment:} The system maintains competency profiles for users that define their qualifications for different types of annotation tasks. Assignment algorithms consider these profiles to ensure tasks are routed to appropriately qualified annotators.
-
-\textbf{Workload Balancing:} The assignment system implements sophisticated workload balancing that considers current user workload, task complexity, and deadline requirements. This balancing helps prevent annotator overload while maintaining consistent progress across all active projects.
-
-\textbf{Priority-Based Routing:} Tasks can be assigned different priority levels that influence routing decisions. High-priority tasks may be routed to senior annotators or processed ahead of normal workflow queues.
-
-\textbf{Consensus Building Logic:} For tasks requiring consensus, the system implements configurable consensus mechanisms that can require agreement from multiple annotators or use majority voting approaches depending on project requirements.
-
-\subsection{Notification and Communication System}
-
-The notification system ensures that users receive timely information about task assignments, workflow events, and collaboration opportunities.
-
-\textbf{Multi-Channel Notification Delivery:} The system supports multiple notification channels including in-application notifications, email alerts, and mobile push notifications. Users can configure their notification preferences based on their role and work patterns.
-
-\textbf{Real-Time Communication Features:} The system includes real-time communication features that enable immediate consultation and collaboration between annotators. These features include instant messaging, screen sharing, and collaborative annotation sessions.
-
-\textbf{Escalation and Timeout Management:} The notification system implements escalation procedures for overdue tasks and automatic timeout management for tasks that exceed defined time limits. These features help maintain workflow momentum and identify potential bottlenecks.
-
-\section{Annotation Interface Module Design}
-
-\subsection{OHIF Integration and Customization}
-
-The annotation interface builds upon the OHIF Viewer platform, extending it with specialized features required for intelligent medical annotation workflows.
-
-\textbf{OHIF Viewer Foundation:} The system utilizes OHIF Viewer 3.x as the foundational medical imaging platform, providing robust DICOM support, high-performance image rendering, and extensible architecture. This foundation ensures compatibility with existing medical imaging infrastructure while providing a familiar interface for medical professionals.
-
-\textbf{Custom Extension Development:} Several custom OHIF extensions have been developed to integrate workflow management, AI assistance, and collaborative features:
-
-\begin{itemize}
-    \item \textit{Workflow Integration Extension:} Connects the viewer to the workflow management system for task retrieval and status updates
-    \item \textit{AI Assistance Extension:} Integrates MONAI Label capabilities directly into the annotation interface
-    \item \textit{Collaboration Extension:} Enables real-time collaborative annotation and communication features
-    \item \textit{Quality Control Extension:} Provides specialized tools for annotation review and validation
-\end{itemize}
-
-\textbf{Mode-Based Interface Configuration:} The system implements different interface modes optimized for specific workflows:
-
-\begin{itemize}
-    \item \textit{Annotation Mode:} Optimized for initial annotation tasks with AI assistance
-    \item \textit{Review Mode:} Specialized for quality control and validation workflows
-    \item \textit{Consensus Mode:} Designed for collaborative consensus-building sessions
-    \item \textit{Training Mode:} Educational interface for training new annotators
-\end{itemize}
-
-\subsection{User Interaction Design and Experience}
-
-The user interface is designed specifically for medical professionals, emphasizing efficiency, accuracy, and user satisfaction.
-
-\textbf{Medical Professional-Centric Design:} The interface design follows established medical imaging conventions and incorporates feedback from practicing radiologists and medical technicians. This approach ensures that the system enhances rather than disrupts established clinical workflows.
-
-\textbf{Adaptive Interface Layout:} The system supports adaptive interface layouts that automatically adjust based on screen size, user preferences, and task requirements. This adaptability ensures optimal user experience across different devices and work environments.
-
-\textbf{Keyboard and Gesture Support:} The interface includes comprehensive keyboard shortcuts and gesture support that enable rapid navigation and annotation. These features are particularly important for experienced users who value efficiency and speed.
-
-\textbf{Context-Sensitive Help:} The system provides context-sensitive help and guidance that assists users in understanding available features and completing complex annotation tasks. This support is particularly valuable for new users and complex annotation scenarios.
-
-\subsection{Real-Time Collaboration Features}
-
-The collaboration features enable multiple medical professionals to work together effectively on annotation tasks while maintaining annotation quality and consistency.
-
-\textbf{Simultaneous Multi-User Annotation:} The system supports simultaneous annotation by multiple users on the same medical imaging study. Real-time synchronization ensures that all participants see the same view and can observe each other's annotations in real-time.
-
-\textbf{Collaborative Annotation Tools:} Specialized tools enable collaborative annotation scenarios including shared pointer indicators, collaborative measurement tools, and group annotation sessions with voice communication integration.
-
-\textbf{Conflict Resolution Mechanisms:} When multiple users annotate the same anatomical structures, the system provides conflict resolution mechanisms that help users reconcile differences and reach consensus on final annotations.
-
-\textbf{Session Recording and Playback:} Collaboration sessions can be recorded for training purposes, quality control review, or documentation of complex annotation decisions. These recordings help preserve valuable medical knowledge and support continuous improvement.
-
-\section{AI Assistance Module Design}
-
-\subsection{MONAI Label Integration Architecture}
-
-The AI assistance module integrates MONAI Label framework to provide state-of-the-art AI support for medical annotation tasks.
-
-\textbf{MONAI Label Service Architecture:} The MONAI Label service is deployed as a containerized microservice that provides AI inference capabilities through RESTful APIs. This architecture enables scalable deployment and easy integration with the annotation interface.
-
-\textbf{Model Management Framework:} The system implements a comprehensive model management framework that supports multiple AI models, model versioning, and dynamic model loading based on annotation requirements.
-
-\textbf{Interactive Segmentation Pipeline:} The system implements an interactive segmentation pipeline that combines automated AI predictions with user guidance to produce high-quality annotations with minimal manual effort.
-
-\subsection{AI Model Integration and Management}
-
-The system supports integration of multiple AI models optimized for different medical imaging tasks and anatomical structures.
-
-\textbf{Foundation Model Support:} The system integrates the SAM foundation model that provides comprehensive segmentation capabilities for over 127 anatomical structures across multiple medical imaging modalities.
-
-\textbf{Specialized Model Integration:} In addition to foundation models, the system supports integration of specialized models optimized for specific anatomical regions or pathological conditions:
-
-\begin{itemize}
-    \item \textit{DeepEdit:} Interactive segmentation model for user-guided annotation
-    \item \textit{Organ-Specific Models:} Specialized models for liver, lung, brain, and other organ systems
-    \item \textit{Pathology Detection Models:} Models trained for specific pathological findings
-    \item \textit{Custom Institutional Models:} Support for institution-specific model integration
-\end{itemize}
-
-\textbf{Model Performance Monitoring:} The system includes comprehensive model performance monitoring that tracks prediction accuracy, processing time, and user satisfaction metrics. This monitoring enables continuous model improvement and optimization.
-
-\subsection{Interactive Segmentation Workflow}
-
-The interactive segmentation workflow combines automated AI capabilities with expert guidance to achieve optimal annotation results.
-
-\textbf{AI-First Annotation Approach:} The workflow begins with AI-generated preliminary annotations that provide a starting point for expert review and refinement. This approach significantly reduces manual annotation time while maintaining high quality standards.
-
-\textbf{Progressive Refinement Interface:} Users can progressively refine AI predictions through various interaction methods including point clicks, boundary adjustments, and region corrections. The AI model adapts to user corrections in real-time, improving subsequent predictions.
-
-\textbf{Uncertainty Visualization:} The system visualizes AI prediction uncertainty to help users focus their attention on areas where manual review is most beneficial. This feature enables efficient allocation of expert time and attention.
-
-\textbf{Quality Assessment Integration:} Automated quality assessment tools evaluate annotation consistency and accuracy, providing real-time feedback to users and identifying potential areas for improvement.
-
-\section{Data Management Module Design}
-
-\subsection{DICOM Storage and Management}
-
-The data management module provides comprehensive DICOM storage and management capabilities that ensure compatibility with existing medical imaging infrastructure.
-
-\textbf{Orthanc PACS Integration:} The system utilizes Orthanc as the core DICOM storage platform, providing full DICOM compliance, DICOMweb protocol support, and seamless integration with existing hospital PACS systems.
-
-\textbf{Scalable Storage Architecture:} The storage architecture supports both local and cloud-based storage backends, enabling flexible deployment options that accommodate different institutional requirements and constraints.
-
-\textbf{Performance Optimization:} The system implements various performance optimization techniques including image caching, progressive loading, and intelligent prefetching to ensure optimal user experience even with large medical imaging datasets.
-
-\subsection{Metadata Synchronization and Management}
-
-Effective metadata management is crucial for efficient annotation workflows and system integration.
-
-\textbf{Automatic Metadata Extraction:} The system automatically extracts and indexes DICOM metadata to enable efficient search, filtering, and organization of medical imaging studies. This metadata supports workflow routing and task assignment decisions.
-
-\textbf{Cross-System Synchronization:} The system implements automatic synchronization mechanisms that keep annotation metadata synchronized across all system components while maintaining data consistency and integrity.
-
-\textbf{Custom Metadata Support:} The system supports custom metadata fields that enable institutions to add project-specific information and annotation requirements without modifying core system functionality.
-
-\subsection{Backup and Recovery Strategies}
-
-Robust backup and recovery capabilities ensure data protection and business continuity for critical medical annotation workflows.
-
-\textbf{Multi-Level Backup Strategy:} The system implements a multi-level backup strategy that includes real-time replication, scheduled backups, and long-term archival storage. This approach ensures data protection against various failure scenarios.
-
-\textbf{Point-in-Time Recovery:} The system supports point-in-time recovery capabilities that enable restoration of data and annotations to specific timestamps. This capability is crucial for recovering from data corruption or accidental modifications.
-
-\textbf{Disaster Recovery Planning:} Comprehensive disaster recovery procedures ensure that the system can be restored quickly in the event of major infrastructure failures or natural disasters.
-
-\section{Technology Stack Selection and Justification}
-
-\subsection{Frontend Technology Choices}
-
-The frontend technology stack is selected to provide optimal user experience while ensuring maintainability and extensibility.
-
-\textbf{React Framework Selection:} React is chosen as the primary frontend framework due to its excellent performance, large ecosystem, and strong community support. React's component-based architecture aligns well with the modular design requirements of medical imaging interfaces.
-
-\textbf{Refine.dev Integration:} Refine.dev is selected as the rapid development framework for administrative interfaces due to its built-in support for CRUD operations, authentication, and real-time updates. This choice significantly accelerates development of workflow management interfaces.
-
-\textbf{Ant Design Component Library:} Ant Design provides a comprehensive component library that ensures consistent user interface design and reduces development time. The library's medical and scientific components are particularly well-suited for healthcare applications.
-
-\textbf{OHIF Viewer Platform:} OHIF Viewer is selected as the medical imaging foundation due to its proven track record in clinical environments, extensive DICOM support, and active development community focused on medical imaging requirements.
-
-\subsection{Backend Technology Decisions}
-
-The backend technology stack is selected to provide scalability, reliability, and integration capabilities required for healthcare applications.
-
-\textbf{Supabase Platform Choice:} Supabase is selected as the backend platform due to its real-time capabilities, built-in authentication, and PostgreSQL foundation. These features provide excellent support for collaborative workflows and real-time annotation updates.
-
-\textbf{PostgreSQL Database Selection:} PostgreSQL is chosen as the primary database due to its excellent performance with complex queries, strong consistency guarantees, and extensive JSON support that accommodates flexible annotation metadata requirements.
-
-\textbf{Node.js Runtime Environment:} Node.js is selected for custom backend services due to its excellent performance for I/O-intensive operations and large ecosystem of medical imaging libraries.
-
-\subsection{AI and Machine Learning Infrastructure}
-
-The AI infrastructure is designed to provide high-performance model inference while maintaining flexibility for future model integration.
-
-\textbf{MONAI Framework Selection:} MONAI is chosen as the primary AI framework due to its specific focus on medical imaging applications, comprehensive model library, and strong integration capabilities with medical imaging workflows.
-
-\textbf{PyTorch Deep Learning Platform:} PyTorch is selected as the underlying deep learning platform due to its dynamic computation graphs, excellent debugging capabilities, and strong support in the medical imaging research community.
-
-\textbf{Docker Containerization Strategy:} Docker containerization is used throughout the system to ensure consistent deployment across different environments and enable scalable infrastructure management.
-
-\subsection{Infrastructure and Deployment Architecture}
-
-The infrastructure architecture is designed to support both cloud and on-premises deployment while maintaining security and performance requirements.
-
-\textbf{Nginx Reverse Proxy:} Nginx is selected as the reverse proxy and load balancer due to its excellent performance, robust security features, and extensive configuration capabilities required for medical imaging applications.
-
-\textbf{Container Orchestration Strategy:} The system supports deployment using both Docker Compose for smaller installations and Kubernetes for large-scale deployments, providing flexibility for different institutional requirements.
-
-\textbf{Monitoring and Observability:} Comprehensive monitoring and observability solutions are integrated to ensure system reliability and enable proactive maintenance and optimization. 
+The most significant advantage of this approach is its automated, declarative strategy for data synchronization. Instead of manually refetching data after a change, the system uses \textbf{query invalidation}.
+When a mutation occurs (e.g., a user updates a project via the `useUpdate` hook), `refine`'s data provider automatically calls `queryClient.invalidateQueries(['projects'])`. This action does not immediately trigger a refetch. Instead, it marks all data associated with the `['projects']` query key as stale. TanStack Query then intelligently and automatically refetches the data for any currently mounted component that is subscribed to that query.
+
+This strategy avoids the anti-pattern of "prop drilling" a `refetch` function down through multiple component layers. The component triggering the mutation does not need to know which other components display the data. It simply invalidates the relevant piece of data, and the framework ensures that the UI updates consistently across the entire application. This declarative approach radically simplifies state management, reduces bugs, and improves application performance and resilience.
+
+\section{Backend Architecture and Workflow Orchestration}
+\label{sec:backend_architecture}
+
+The backend architecture is founded on the principle of a "logic-intensive database," wherein complex business rules, data access policies, and asynchronous processes are encapsulated directly within PostgreSQL. This approach, facilitated by Supabase, minimizes external dependencies and centralizes the system's core logic.
+
+\subsection{Secure and Abstracted Data Access via Views and Functions}
+\label{subsec:secure_data_access}
+
+\subsubsection{Problem: Direct Table Exposure and Logic Duplication}
+Exposing raw database tables directly via an API is a significant security risk and a poor architectural practice. It tightly couples the frontend application to the physical data schema, making future schema migrations brittle and difficult. Moreover, business logic and validation rules (e.g., "a new project must be assigned to the user who created it") would need to be re-implemented in every client or middleware that interacts with the data, leading to code duplication and inconsistencies.
+
+\subsubsection{Solution: A Multi-Layered Abstraction with PostgreSQL Views and Functions}
+To address this, the backend employs a robust abstraction layer within the database itself.
+\begin{enumerate}
+    \item \textbf{Core Tables}: The fundamental data is stored in "private" tables, prefixed with an underscore (e.g., `_projects`, `_tasks`). These tables are never directly exposed to the API.
+    \item \textbf{Security Views}: For data retrieval (Read operations), PostgreSQL views are created (e.g., `projects`, `tasks`). These views act as a stable interface for the frontend, abstracting the underlying table structure. They are defined with `WITH (security_invoker = true)` and are governed by Supabase's Row-Level Security (RLS) policies, ensuring that users can only see the data they are permitted to access.
+    \item \textbf{SQL Functions as Atomic Transactions}: For data mutation, PostgreSQL functions are implemented. For standard CRUD operations, these functions follow a strict naming convention (e.g., `projects_create`, `projects_update`, `projects_delete`). The `refine.dev` data provider is configured to call these functions by convention, mapping a `create` operation on the `projects` resource directly to the `projects_create` SQL function.
+\end{enumerate}
+
+For more complex actions that do not fit the standard CRUD model, such as "submitting a task for review" or "initiating a consensus check," the platform leverages `refine.dev`'s `useCustomMutation` hook. This hook allows the frontend to directly invoke a specific SQL function via RPC without needing to be tied to a resource's standard `create` or `update` methods. This provides the flexibility to handle any business process while ensuring that all logic remains centralized, atomic, and secure within the database. This design decouples the schema from the API, enforces security at the data layer, and executes business logic atomically and consistently.
+
+\subsection{Asynchronous Workflow Automation Engine}
+\label{subsec:workflow_automation}
+
+\subsubsection{Problem: Orchestrating Complex, Asynchronous State Transitions}
+Data annotation workflows are inherently stateful and often involve asynchronous, non-human steps. For example, after two annotators complete a task, a consensus algorithm must run. Or, a task might need to be automatically routed to an AI model for pre-labeling. Implementing a reliable system to manage these state transitions is non-trivial. A traditional approach would require a dedicated, always-on server application with a job queue and workers, which contradicts the serverless architecture and adds significant operational complexity.
+
+\subsubsection{Solution: Cron-Driven Orchestration via Virtual Users}
+The platform implements a novel workflow engine entirely within PostgreSQL, driven by scheduled cron jobs. This engine operates on the concept of "virtual users," which are system accounts (e.g., `ROUTER`, `CONSENSUS`) that represent automated processes.
+
+The orchestration flow is illustrated in Figure \ref{fig:workflow_engine_flow} and proceeds as follows:
+\begin{enumerate}
+    \item \textbf{State Representation}: The entire workflow is modeled as a directed graph, defined in the `_workflows` and `_workflow_stages` tables. The visual representation of this graph is created on the frontend using the \texttt{xyflow} library.
+    \item \textbf{Assignment to Virtual User}: When a task reaches a stage requiring automation (e.g., a 'ROUTER' stage), a new entry is created in the `_task_assignments` table, assigning the task to the corresponding virtual user (e.g., the `ROUTER` user ID).
+    \item \textbf{Scheduled Polling}: A PostgreSQL cron job, such as `workflow_route()`, is scheduled to execute periodically (e.g., every minute).
+    \item \textbf{Task Processing}: The cron function queries the `_task_assignments` table for pending tasks assigned to its designated virtual user.
+    \item \textbf{Logic Execution}: For each pending task, the function executes its domain-specific logic. For a `ROUTER` stage, it reads the routing rules from the stage's `custom_config` JSONB field and determines the next stage.
+    \item \textbf{State Transition}: The function marks the current assignment as 'COMPLETED' and creates a new assignment for the next stage in the workflow. This creates an immutable, auditable log of the entire workflow execution.
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{path/to/your/workflow-engine-flow.pdf}
+    \caption{State Transition Diagram of the Cron-Driven Workflow Engine.}
+    \label{fig:workflow_engine_flow}
+\end{figure}
+
+This cron-based design provides a robust, scalable, and fully automated workflow engine without the need for any external server infrastructure, perfectly aligning with the project's serverless ethos.
+
+\section{Infrastructure and Security}
+\label{sec:infrastructure_security}
+
+\subsection{Unified Authentication Across Micro-Frontends}
+\label{subsec:unified_authentication}
+
+\subsubsection{Problem: Disparate Authentication States}
+The system's architecture integrates the OHIF Viewer as an embedded component, which effectively acts as a micro-frontend within the main application. A naive implementation would lead to significant authentication challenges. Each "frontend" (the main app and the viewer) would need to manage its own authentication state. This could require the user to log in twice or involve complex, insecure token-passing mechanisms (e.g., using `postMessage` to send a JWT to the viewer's iframe). As depicted in Figure \ref{fig:disparate_auth}, this approach creates a fragmented user experience and enlarges the attack surface for vulnerabilities like token interception.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{path/to/your/disparate-auth-diagram.pdf}
+    \caption{Problematic Disparate Authentication Architecture.}
+    \label{fig:disparate_auth}
+\end{figure}
+
+\subsubsection{Solution: Centralized Authentication via Nginx Reverse Proxy}
+The chosen solution was to centralize authentication at the infrastructure level using Nginx as a reverse proxy and authentication gateway. This pattern, shown in Figure \ref{fig:unified_auth}, removes the burden of authentication enforcement from the individual client applications.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{path/to/your/unified-auth-diagram.pdf}
+    \caption{Centralized Authentication via Nginx Reverse Proxy.}
+    \label{fig:unified_auth}
+\end{figure}
+
+The request flow is as follows:
+\begin{enumerate}
+    \item The user's browser makes a request to any part of the application.
+    \item Nginx, as the sole entry point, intercepts the request.
+    \item It inspects the request for the Supabase JWT stored in a secure, HttpOnly cookie.
+    \item Nginx uses the `auth_request` directive to make a subrequest to an internal endpoint that validates the JWT against Supabase's `/auth/v1/user` endpoint.
+    \item \textbf{If the token is valid}, the subrequest returns a 200 OK status, and Nginx proxies the original request to the appropriate upstream service (the main React application or the OHIF viewer).
+    \item \textbf{If the token is invalid or absent}, the subrequest returns a 401 Unauthorized status, and Nginx immediately redirects the user to the login page without ever touching the downstream applications.
+\end{enumerate}
+This configuration simplifies the frontend code immensely. Neither the main application nor the OHIF integration needs to contain logic to protect its routes; they can trust that any request they receive has already been authenticated by the Nginx gateway. This creates a more secure, maintainable, and robust authentication system.
