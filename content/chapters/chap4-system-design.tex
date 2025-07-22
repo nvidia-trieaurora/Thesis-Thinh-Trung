@@ -198,42 +198,72 @@ The collaboration features enable multiple medical professionals to work togethe
 
 \subsection{MONAI Label Integration Architecture}
 
-The AI assistance module integrates MONAI Label framework to provide state-of-the-art AI support for medical annotation tasks.
+The AI assistance module integrates MONAI Label framework to provide comprehensive AI support for medical annotation tasks through a sophisticated multi-modal interaction system deployed as a containerized microservice.
 
-\textbf{MONAI Label Service Architecture:} The MONAI Label service is deployed as a containerized microservice that provides AI inference capabilities through RESTful APIs. This architecture enables scalable deployment and easy integration with the annotation interface.
+\textbf{MONAI Label Service Architecture:} The MONAI Label service operates as a containerized microservice accessible via RESTful APIs at http://localhost:8000/, providing seamless integration with the OHIF viewer interface. The service supports dynamic model loading, real-time inference capabilities, and configurable annotation workflows optimized for medical imaging environments.
 
-\textbf{Model Management Framework:} The system implements a comprehensive model management framework that supports multiple AI models, model versioning, and dynamic model loading based on annotation requirements.
-
-\textbf{Interactive Segmentation Pipeline:} The system implements an interactive segmentation pipeline that combines automated AI predictions with user guidance to produce high-quality annotations with minimal manual effort.
-
-\subsection{AI Model Integration and Management}
-
-The system supports integration of multiple AI models optimized for different medical imaging tasks and anatomical structures.
-
-\textbf{Foundation Model Support:} The system integrates the SAM foundation model that provides comprehensive segmentation capabilities for over 127 anatomical structures across multiple medical imaging modalities.
-
-\textbf{Specialized Model Integration:} In addition to foundation models, the system supports integration of specialized models optimized for specific anatomical regions or pathological conditions:
+\textbf{Multi-Modal Interaction Framework:} The system implements three distinct interaction paradigms integrated directly into the OHIF annotation interface:
 
 \begin{itemize}
-    \item \textit{DeepEdit:} Interactive segmentation model for user-guided annotation
-    \item \textit{Organ-Specific Models:} Specialized models for liver, lung, brain, and other organ systems
-    \item \textit{Pathology Detection Models:} Models trained for specific pathological findings
-    \item \textit{Custom Institutional Models:} Support for institution-specific model integration
+    \item \textbf{Auto-Segmentation:} Fully automated annotation using pre-trained foundation models
+    \item \textbf{Point Prompts:} Interactive guidance through user-provided click points for targeted refinement
+    \item \textbf{Class Prompts:} Categorical selection of anatomical structures for focused segmentation tasks
 \end{itemize}
 
-\textbf{Model Performance Monitoring:} The system includes comprehensive model performance monitoring that tracks prediction accuracy, processing time, and user satisfaction metrics. This monitoring enables continuous model improvement and optimization.
+\textbf{Real-Time Model Configuration:} The interface provides dynamic model configuration capabilities allowing users to select optimal models and adjust inference parameters based on specific annotation requirements and computational constraints.
 
-\subsection{Interactive Segmentation Workflow}
+\subsection{AI Model Integration and Specialized Capabilities}
 
-The interactive segmentation workflow combines automated AI capabilities with expert guidance to achieve optimal annotation results.
+The system integrates multiple specialized AI models optimized for different medical imaging scenarios and anatomical structures.
 
-\textbf{AI-First Annotation Approach:} The workflow begins with AI-generated preliminary annotations that provide a starting point for expert review and refinement. This approach significantly reduces manual annotation time while maintaining high quality standards.
+\textbf{Foundation Model Integration:} The system integrates advanced foundation models including:
 
-\textbf{Progressive Refinement Interface:} Users can progressively refine AI predictions through various interaction methods including point clicks, boundary adjustments, and region corrections. The AI model adapts to user corrections in real-time, improving subsequent predictions.
+\begin{itemize}
+    \item \textbf{SAM (Segment Anything Model):} Available in both 2D (sam\_2d) and 3D (sam\_3d) variants, providing versatile segmentation capabilities across diverse medical imaging modalities
+    \item \textbf{DeepEdit Framework:} Interactive segmentation model (deepedit) enabling user-guided refinement for precise anatomical structure delineation
+    \item \textbf{Specialized Segmentation Models:} Dedicated models for specific anatomical regions including deepedit\_seg for comprehensive organ segmentation
+    \item \textbf{Localization Models:} Specialized models such as localization\_vertebra for specific anatomical landmark detection
+\end{itemize}
 
-\textbf{Uncertainty Visualization:} The system visualizes AI prediction uncertainty to help users focus their attention on areas where manual review is most beneficial. This feature enables efficient allocation of expert time and attention.
+\textbf{Anatomical Structure Support:} The system provides comprehensive support for multiple anatomical categories:
 
-\textbf{Quality Assessment Integration:} Automated quality assessment tools evaluate annotation consistency and accuracy, providing real-time feedback to users and identifying potential areas for improvement.
+\begin{itemize}
+    \item \textbf{Organs:} Major abdominal organs including liver, spleen, left kidney, right kidney, stomach
+    \item \textbf{Cardiovascular Structures:} Aorta, inferior vena cava, and other vascular components
+    \item \textbf{Musculoskeletal System:} Bones, muscles, and vertebral structures
+    \item \textbf{Cardiopulmonary System:} Lung, heart, and associated structures
+\end{itemize}
+
+\textbf{Dynamic Model Selection:} The interface enables real-time model switching based on annotation requirements, allowing users to select the most appropriate model for specific anatomical structures or clinical scenarios without interrupting the annotation workflow.
+
+\subsection{Interactive Annotation Workflow Implementation}
+
+The system implements a sophisticated interactive annotation workflow that seamlessly integrates multiple AI assistance modalities within the OHIF viewer environment.
+
+\textbf{Auto-Segmentation Workflow:} Users can initiate fully automated segmentation by selecting target anatomical structures from predefined categories (Organs, Lung/Heart, Vascular, Bones, Muscles). The system automatically applies the most appropriate model configuration and generates preliminary annotations that serve as starting points for expert refinement.
+
+\textbf{Point Prompts Interaction:} The point prompts mode enables precise user guidance through foreground and background click points. Users can add positive clicks to indicate target regions and negative clicks to exclude unwanted areas. The system provides real-time visual feedback with "Clear Points" and "Clear All Points" functionality for iterative refinement.
+
+\textbf{Class Prompts Methodology:} The class prompts approach allows users to specify target anatomical structures through categorical selection, guiding the AI model to focus on specific regions of interest. This method is particularly effective for well-defined anatomical structures with consistent imaging characteristics.
+
+\textbf{Advanced Configuration Options:} The system provides comprehensive configuration interfaces for both inference and training scenarios:
+
+\begin{itemize}
+    \item \textbf{Inference Configuration:} Real-time adjustment of model parameters, device selection (CPU/GPU), and performance optimization settings
+    \item \textbf{Training Configuration:} Configurable parameters including learning rates, batch sizes, dataset selection, and training pipeline optimization for institutional model customization
+    \item \textbf{Segmentation Tools Integration:} Comprehensive annotation tools including manual correction capabilities, appearance settings, and segment management with visual feedback
+\end{itemize}
+
+\textbf{Real-Time Collaboration and Quality Control:} The annotation interface includes integrated collaboration features enabling multiple users to work simultaneously on complex annotation tasks. The system provides real-time synchronization of AI predictions and manual refinements, ensuring consistent annotation quality across collaborative workflows.
+
+Figure 4.2 illustrates the comprehensive MONAI Label integration within the OHIF viewer, demonstrating the seamless workflow from model selection through interactive annotation to final result validation.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{content/resources/images/chap4-system-design/monai-ohif-integration.png}
+\caption{MONAI Label Integration in OHIF Viewer - The comprehensive AI assistance interface showing Auto-Segmentation, Point Prompts, and Class Prompts workflows with real-time model configuration and anatomical structure selection capabilities integrated directly into the medical image annotation environment.}
+\label{fig:monai-ohif-integration}
+\end{figure}
 
 \section{Data Management Module Design}
 
