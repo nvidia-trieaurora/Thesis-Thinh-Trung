@@ -99,6 +99,7 @@ tocpage,  % Put ``Page'' at top of ToC. Add lotpage, lofpage if
 %% I'm loading the marvosym package so that I can produce a
 %% smiley face with the command \Smiley.
 \usepackage{marvosym}
+\usepackage[inkscapelatex=false]{svg}
 
 %% Also, the enumitem package is great for customising
 %% list environments.
@@ -313,6 +314,18 @@ bookmarksdepth=section,breaklinks=true]{hyperref}
     breakatwhitespace=false,
     tabsize=4,
     captionpos=b,
+}
+
+\lstset{
+  language=JavaScript,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{gray!10},
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{orange}
 }
 
 
